@@ -31,7 +31,7 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all_plus_condition(condition) "<<endl;
                     if (tables.find(name) == tables.end()){
-                        cout << "HERE"<<endl;
+                        //cout << "HERE"<<endl;
                         return Table();
                     }
                     Table selected = tables[name].select_all_plus_condition(condition);
