@@ -64,7 +64,7 @@ class SQL{
                 }
                 else{
                     string name = ptree["table_name"][0];
-                     cout << "-------------------------"<<endl;
+                    //cout << "-------------------------"<<endl;
                     //cout << "firing select_specific_fields_no_condition(ptree[fields])"<<endl;
                     Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
                     //cout << selected << endl;
@@ -89,6 +89,9 @@ class SQL{
                 // for (int i = 0; i < check.size(); i++){
                 //     cout << check[i]<<endl;
                 // }
+                if (tables.find(name) == tables.end()){
+                    return Table();
+                }
                 tables[name].insert_into(ptree["values"]);
                 //cout << tables[name] << endl;
                 return tables[name];

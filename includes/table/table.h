@@ -27,7 +27,9 @@ class Table{
     public:
 
         Table(){
-
+            num = 0;
+            string s = "";
+            strcpy(file_name,s.c_str());
         }
 
         Table(const string& name, vector<string>fieldnames){
@@ -67,6 +69,9 @@ class Table{
                 }
             }
             getdata.close();
+            // for (int i = 0; i < set_fields.size(); i++){
+            //     cout << "[" << set_fields[i] << "]"<<endl;
+            // }
             strcpy(file_name,s.c_str());
             fstream f;
             open_fileRW(f, file_name);
@@ -125,6 +130,9 @@ class Table{
                 }
             }
             getdata.close();
+            // for (int i = 0; i < set_fields.size(); i++){
+            //     cout << "[" << set_fields[i] << "]"<<endl;
+            // }
             string name = file_name;
             name += "_" + to_string(serial++);
             Table selected(name, set_fields);
@@ -166,6 +174,9 @@ class Table{
                     }
                 }
             }
+            // for (int i = 0; i < set_fields.size(); i++){
+            //     cout << "[" << set_fields[i] << "]"<<endl;
+            // }
             // cout << set_fields<<endl;
             Table selected = select(set_fields, condition);
             // cout <<"testing hereeeeeeeeeeee"<<endl;
