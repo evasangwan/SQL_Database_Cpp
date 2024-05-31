@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 #include <iostream>
 #include <iomanip>
+#include "../../includes/sql/sql.h"
+#include <vector> 
 using namespace std;
 
 bool test_stub(bool debug = false)
@@ -8,6 +10,42 @@ bool test_stub(bool debug = false)
   if (debug){
     cout << "testB:: test-sub() entering test_sub" << endl;
   }
+  const vector<string> insertlist = {
+/*05*/     "create table student fields  fname,          lname,    major,    age",
+/*06*/     "insert into student values Flo,            Yao, 	Art, 	20",
+/*07*/     "insert into student values Bo, 		     Yang, 	CS, 		28",
+/*08*/     "insert into student values \"Sam\", Jackson, 	CS, 		40",
+/*09*/     "insert into student values \"Billy\",	     Jackson, 	Math,	27",
+/*10*/     "insert into student values \"Mary Ann\",   Davis,	Math,	30",
+"insert into student values Nat,            Davis, 	Art, 	22",
+/*07*/     "insert into student values Mark, 		     Yao, 	CS, 		20",
+/*08*/     "insert into student values \"Sam L.\", Davis, 	CS, 		30",
+/*09*/     "insert into student values \"Bill\",	     Davis, 	CS,	18",
+/*10*/     "insert into student values \"Marilym\",   Davis,	Math,	30",
+
+};
+ SQL sql;
+ Table t;
+  for (int i = 0; i < insertlist.size(); i++){
+    if (i == insertlist.size()-1){
+      cout << sql.command(insertlist[i]) << endl;
+    }
+    else
+    sql.command(insertlist[i]);
+  }
+    const vector<string> commandlines = {
+// "select * from student",
+/*17*/     "select * from student where (major=Art or major =CS)",
+/*18*/     "select * from student where lname>J",
+/*19*/     "select * from student where lname>J and (major=CS or major=Art)"
+};
+for (int i = 0; i < commandlines.size(); i++){
+  cout << commandlines[i] << endl;
+   t = sql.command(commandlines[i]);
+   cout << t << endl;
+      cout << "basic_test: records selected: "<< sql.select_recnos() << endl;
+}
+
   return true;
 }
 

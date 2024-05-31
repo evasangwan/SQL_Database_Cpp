@@ -34,6 +34,7 @@ class Table{
         }
 
         Table(const string& name, vector<string>fieldnames){
+            selectrecnos.clear();
             set_fields.clear();
             set_fields = fieldnames;
             num = 0;
@@ -248,10 +249,13 @@ class Table{
         Table select(vector<string>fields,vector<string> conditions){
             set_fields.clear();
             set_fields = fields;
+            // cout << "@@@@@@"<<endl;
+            // cout << set_fields << endl;
             string name = file_name;
             name += "_" + to_string(serial++);
             string s = file_name;
-            Table selected(s);
+            // Table selected(s);
+            Table selected(name,set_fields);
             // cout << "printing selected "<<endl;
             // cout << selected << endl;
             ShuntingYard sy(conditions);

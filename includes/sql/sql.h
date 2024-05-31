@@ -41,6 +41,9 @@ class SQL{
                         recnos.clear();
                         return Table();
                     }
+                    // cout << "---------------------------------------"<<endl;
+                    // cout << tables[name] << endl;
+                    // cout << "---------------------------------------"<<endl;
                     Table selected = tables[name].select_all_plus_condition(condition);
                     //cout << selected << endl;
                     recnos.clear();
