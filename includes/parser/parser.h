@@ -126,8 +126,7 @@ class Parser{
                     return true;
                 }
                 else{
-                    MMap<string, string> reset;
-                    ptree = reset;
+                    ptree.clear();
                     return false; 
                 }
                
@@ -141,10 +140,93 @@ class Parser{
             }
             state = table[state][col];
         }
-        MMap<string, string> reset;
-        ptree = reset;
+        ptree.clear();
         return false;
     }
+      // bool get_parse_tree(){
+    //     bool table_name = false;
+    //     bool values = false;
+    //     bool coll = false;
+    //     bool fields = false;
+    //     bool condition = false;
+    //     bool where = false;
+    //     //cout << queue << endl;
+    //     string token = queue.pop();
+    //     int state = 0;
+    //     int col;
+    //     if (keywords.contains(token)){
+    //         col = keywords[token];
+    //     }
+    //     else{
+    //         col = keywords["symbol"];
+    //     }
+    //     state = table[state][col];
+    //     while (state != -1){
+    //         if (token == "make" || token == "insert" || token == "create"){
+    //             ptree["command"] += token;
+    //         }
+    //         else if (token == "table" || token == "into"){
+    //             table_name = true;
+    //             //do nothing
+    //         }
+    //         else if (token == "fields"){
+    //             //do nothing
+    //             coll = true;
+    //         }
+    //         else if (token == "values"){
+    //             values = true;
+    //         }
+    //         else if (token == "select"){
+    //              ptree["command"] += token;
+    //              fields = true; // *
+    //         }
+    //         else if (token == "from"){
+    //             table_name = true;
+    //             fields = false;
+    //             //do nothing 
+    //         }
+    //         else if (token == "where"){
+    //             string s = "yes";
+    //             ptree["where"] += s;
+    //             condition = true;
+    //         }
+    //         else{
+    //             if (table_name){
+    //                 ptree["table_name"] += token;
+    //                 table_name = false;
+    //             }
+    //             else if (coll){
+    //                  ptree["col"] += token;
+    //             }
+    //             else if (fields){
+    //                 ptree["fields"] += token;
+    //             }
+    //             else if (condition){
+    //                 ptree["condition"] += token;
+    //             }
+    //             else if (values){
+    //                 ptree["values"] += token;
+    //             }
+    //         }
+    //         if(!queue.empty()){
+    //             token = queue.pop();
+    //         }
+    //         else{
+    //             return true;
+    //         }
+    //         //cout << "token " << token << endl;
+    //         if (keywords.contains(token)){
+    //             col = keywords[token];
+    //         }
+    //         else{
+    //             col = keywords["symbol"];
+    //         }
+    //         state = table[state][col];
+    //     }
+    //     MMap<string, string> reset;
+    //     ptree = reset;
+    //     return false;
+    // }
    
     void set_string(char s[300]){
         inputq.clear();

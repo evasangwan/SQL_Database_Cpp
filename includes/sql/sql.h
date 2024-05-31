@@ -22,12 +22,12 @@ class SQL{
         p.set_string(s);
         ptree = p.parse_tree(); 
         if (ptree.empty()){
-            cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
+            //cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
             recnos.clear();
             return Table();
         }
-        ptree.print_lookup();
-        cout << endl;
+        // ptree.print_lookup();
+        // cout << endl;
        
         if (ptree["command"][0] == "select"){
             if (ptree["fields"][0] == "*"){
