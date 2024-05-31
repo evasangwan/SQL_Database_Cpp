@@ -61,7 +61,9 @@ class Table{
             string str;
             if (getdata.is_open()){
                 while (getline(getdata,str)){
-                    set_fields.push_back(str);
+                    if (!str.empty()){
+                        set_fields.push_back(str);
+                    }
                 }
             }
             getdata.close();
@@ -117,7 +119,9 @@ class Table{
             string str;
             if (getdata.is_open()){
                 while (getline(getdata,str)){
-                    set_fields.push_back(str);
+                    if (!str.empty()){
+                        set_fields.push_back(str);
+                    }
                 }
             }
             getdata.close();
@@ -157,7 +161,9 @@ class Table{
             set_fields.clear();
             if (getdata.is_open()){
                 while (getline(getdata,str)){
-                    set_fields.push_back(str);
+                    if (!str.empty()){
+                        set_fields.push_back(str);
+                    }
                 }
             }
             // cout << set_fields<<endl;
