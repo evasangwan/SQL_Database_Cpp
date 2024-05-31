@@ -30,6 +30,10 @@ class SQL{
                     string name = ptree["table_name"][0];
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all_plus_condition(condition) "<<endl;
+                    if (tables.find(name) == tables.end()){
+                        cout << "HERE"<<endl;
+                        return Table();
+                    }
                     Table selected = tables[name].select_all_plus_condition(condition);
                     //cout << selected << endl;
                     recnos.clear();
@@ -41,6 +45,9 @@ class SQL{
                     //cout << "JUST CHECKING THE NAME should be employee" << name << endl; 
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all() "<<endl;
+                    if (tables.find(name) == tables.end()){
+                        return Table();
+                    }
                     Table selected = tables[name].select_all();
                     recnos.clear();
                     recnos = selected.select_recnos();
@@ -55,6 +62,9 @@ class SQL{
                     string name = ptree["table_name"][0];
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select(ptree[fields], condition) "<<endl
+                    if (tables.find(name) == tables.end()){
+                        return Table();
+                    }
                     Table selected = tables[name].select(ptree["fields"], condition);
                     recnos.clear();
                     recnos = selected.select_recnos();
@@ -66,6 +76,9 @@ class SQL{
                     string name = ptree["table_name"][0];
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_specific_fields_no_condition(ptree[fields])"<<endl;
+                    if (tables.find(name) == tables.end()){
+                        return Table();
+                    }
                     Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
                     //cout << selected << endl;
                     recnos.clear();
