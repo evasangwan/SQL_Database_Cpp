@@ -17,6 +17,7 @@ using namespace std;
 class Parser{
     public:
     Parser(char s[300]){
+        set_keywords();
         make_table(table);
         set_string(s);
     }
@@ -37,8 +38,9 @@ class Parser{
         keywords.insert("symbol",SYMBOL);
         keywords.insert("where",WHERE);
         keywords.insert("condition",CONDITION);
+        keywords.insert("tempstore", TEMPSTORE);
+        keywords.insert("from",FROM);
     }
-
     bool get_parse_tree(){
         bool table_name = false;
         bool values = false;
@@ -46,6 +48,9 @@ class Parser{
         bool fields = false;
         bool condition = false;
         bool where = false;
+        bool fields_check = false;
+        bool values_check = false;
+        bool starcheck = false;
         //cout << queue << endl;
         string token = queue.pop();
         int state = 0;
@@ -68,9 +73,15 @@ class Parser{
             else if (token == "fields"){
                 //do nothing
                 coll = true;
+                fields_check = true;
+                values_check = true;
+                starcheck = true;
             }
             else if (token == "values"){
                 values = true;
+                fields_check = true;
+                values_check = true;
+                starcheck = true;
             }
             else if (token == "select"){
                  ptree["command"] += token;
@@ -79,6 +90,9 @@ class Parser{
             else if (token == "from"){
                 table_name = true;
                 fields = false;
+                fields_check = true;
+                values_check = true;
+                starcheck = true;
                 //do nothing 
             }
             else if (token == "where"){
@@ -108,7 +122,15 @@ class Parser{
                 token = queue.pop();
             }
             else{
-                return true;
+                if (fields_check && values_check && starcheck && table[state][0] == 1){
+                    return true;
+                }
+                else{
+                    MMap<string, string> reset;
+                    ptree = reset;
+                    return false; 
+                }
+               
             }
             //cout << "token " << token << endl;
             if (keywords.contains(token)){
@@ -184,7 +206,7 @@ class Parser{
     void make_table(int table[][MAX_COLUMNS]){
         init_table(table);
         // mark_fail(_table,0);
-        for (int i = 0; i < 12; i++){
+        for (int i = 0; i < 20; i++){
             mark_fail(table,i);
         }
         mark_success(table,5);

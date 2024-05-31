@@ -21,8 +21,14 @@ class SQL{
         Parser p(s);
         p.set_string(s);
         ptree = p.parse_tree(); 
-        //ptree.print_lookup();
-        // cout << endl;
+        if (ptree.empty()){
+            cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
+            recnos.clear();
+            return Table();
+        }
+        ptree.print_lookup();
+        cout << endl;
+       
         if (ptree["command"][0] == "select"){
             if (ptree["fields"][0] == "*"){
                 if (ptree.contains("where")){
@@ -32,6 +38,7 @@ class SQL{
                     //cout << "firing select_all_plus_condition(condition) "<<endl;
                     if (tables.find(name) == tables.end()){
                         //cout << "HERE"<<endl;
+                        recnos.clear();
                         return Table();
                     }
                     Table selected = tables[name].select_all_plus_condition(condition);
@@ -46,6 +53,7 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all() "<<endl;
                     if (tables.find(name) == tables.end()){
+                        recnos.clear();
                         return Table();
                     }
                     Table selected = tables[name].select_all();
@@ -63,6 +71,7 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select(ptree[fields], condition) "<<endl
                     if (tables.find(name) == tables.end()){
+                        recnos.clear();
                         return Table();
                     }
                     Table selected = tables[name].select(ptree["fields"], condition);
@@ -77,6 +86,7 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_specific_fields_no_condition(ptree[fields])"<<endl;
                     if (tables.find(name) == tables.end()){
+                        recnos.clear();
                         return Table();
                     }
                     Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
@@ -103,6 +113,7 @@ class SQL{
                 //     cout << check[i]<<endl;
                 // }
                 if (tables.find(name) == tables.end()){
+                    recnos.clear();
                     return Table();
                 }
                 tables[name].insert_into(ptree["values"]);

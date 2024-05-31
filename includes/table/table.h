@@ -30,6 +30,7 @@ class Table{
             num = 0;
             string s = "";
             strcpy(file_name,s.c_str());
+            selectrecnos.clear();
         }
 
         Table(const string& name, vector<string>fieldnames){
