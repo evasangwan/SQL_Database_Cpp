@@ -49,7 +49,9 @@ bool test_stub(bool debug = false)
       "select * from student where major >= CS",
       "select lname, fname from student where fname = Nat",
 "select fname,major,lname from student where lname = \"Yao Mi\"",
-"select * from student"
+"create table job fields name, age, job",
+"insert into job values jackie chan engineer",
+"select * from mamam"
 // "select fname, lname from student where fname = \"Mary Ann\"",
 // "select * from student where fname = \"MaryAnn\"",
 // "select * from student where lname = Jackson",

@@ -56,6 +56,7 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all() "<<endl;
                     if (tables.find(name) == tables.end()){
+                        //cout << "HERE "<<endl;
                         recnos.clear();
                         return Table();
                     }

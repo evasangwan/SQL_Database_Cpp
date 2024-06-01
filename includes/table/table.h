@@ -28,8 +28,11 @@ class Table{
 
         Table(){
             num = 0;
-            string s = "";
+            string s = "temp";
             strcpy(file_name,s.c_str());
+            fstream f;
+            open_fileW(f, file_name);
+            f.close();
             selectrecnos.clear();
             set_fields.clear();     
             mmap.clear();                  
