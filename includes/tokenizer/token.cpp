@@ -30,6 +30,9 @@ string Token::type_string() const{
     if (_type == TOKEN_UNKNOWN || _type == 8 || _type == 47 || _type == 51){ //-1 or 8(#) or " " " 
         return "UNKNOWN";
     }
+    if (_type == 9){ // " " " 
+        return "QUOTES";
+    }
     else{
         return "ERROR";
     }

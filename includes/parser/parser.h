@@ -228,20 +228,66 @@ class Parser{
     //     return false;
     // }
    
+    // void set_string(char s[300]){
+    //     inputq.clear();
+    //     Queue<string> clear;
+    //     queue = clear;
+    //     MMap<string, string> reset;
+    //     ptree = reset;
+    //     cout << ptree << endl;
+    //     STokenizer stk(s);
+    //     Token t;
+    //     stk>>t;
+    //     //cout << "IN SET STRING"<<endl;
+    //     while(stk.more()){
+    //         cout<<setw(10)<<t.type_string()<<setw(10)<<t<<endl;
+    //         if (t.type_string() != "SPACE"){
+    //             inputq.push_back(t.token_str());
+    //         }
+    //         t = Token();
+    //         stk>>t;
+    //     }
+    //     // cout << "********************************************************************************"<<endl;
+    //     // cout << "********************************************************************************"<<endl;
+    //     // cout << inputq << endl;
+    //     // cout << "********************************************************************************"<<endl;
+    //     // cout << "********************************************************************************"<<endl;
+    //     fix_vect();
+    //     for (int i = 0; i < inputq.size(); i++){
+    //         queue.push(inputq[i]);
+    //     }
+    //     //cout << queue << endl;
+    //     // cout << inputq << endl;
+    // }    
+
     void set_string(char s[300]){
         inputq.clear();
         Queue<string> clear;
         queue = clear;
-        MMap<string, string> reset;
-        ptree = reset;
-        cout << ptree << endl;
+        ptree.clear();
         STokenizer stk(s);
         Token t;
         stk>>t;
+        bool insidequotes = false;
+        string inside;
+        int count = 0;
         //cout << "IN SET STRING"<<endl;
         while(stk.more()){
             //cout<<setw(10)<<t.type_string()<<setw(10)<<t<<endl;
-            if (t.type_string() != "SPACE"){
+            if (t.type_string() == "QUOTES"){
+                insidequotes = true;
+                count++;
+                if (count == 2){
+                    inputq.push_back(inside);
+                    insidequotes = false;
+                    count = 0;
+                    inside.clear();
+                }
+            }
+            else if (insidequotes && count < 2){
+                inside += t.token_str();
+            }
+            else if (t.type_string() != "SPACE"){
                 inputq.push_back(t.token_str());
             }
             t = Token();
@@ -259,6 +305,8 @@ class Parser{
         //cout << queue << endl;
         // cout << inputq << endl;
     }    
+
+
     void fix_vect(){
         vector<string> fixed;
         string combine;
@@ -267,27 +315,27 @@ class Parser{
         // cout << "Inputq"<<endl;
         // cout << inputq << endl;
         for (int i = 0; i < inputq.size(); i++){
-            if (inputq[i] == "\""){
-                insidequotes = true;
-                count++;
-                if (count == 2){
-                    combine.pop_back();  //getting rid of extra space
-                    //cout << "combine " << "[" << combine << "]"<< endl;
-                    fixed.push_back(combine);
-                    insidequotes = false;
-                    count = 0;
-                    combine.clear();
-                }
-            }
-            else if (insidequotes && count < 2){
-                combine += inputq[i];
-                combine+=" ";
-            }
-            else{
+            // if (inputq[i] == "\""){
+            //     insidequotes = true;
+            //     count++;
+            //     if (count == 2){
+            //         combine.pop_back();  //getting rid of extra space
+            //         //cout << "combine " << "[" << combine << "]"<< endl;
+            //         fixed.push_back(combine);
+            //         insidequotes = false;
+            //         count = 0;
+            //         combine.clear();
+            //     }
+            // }
+            // else if (insidequotes && count < 2){
+            //     combine += inputq[i];
+            //     combine+=" ";
+            // }
+            // else{
                 if (inputq[i] != ","){
                     fixed.push_back(inputq[i]);
                 }
-            }
+            // }
         }
         // cout << "fixed "<<endl;
         // cout << fixed << endl;
