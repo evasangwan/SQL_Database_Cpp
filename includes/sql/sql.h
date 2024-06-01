@@ -37,15 +37,28 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all_plus_condition(condition) "<<endl;
                     if (tables.find(name) == tables.end()){
-                        //cout << "HERE"<<endl;
-                        recnos.clear();
-                        return Table();
+                        ifstream findtable(table_names);
+                        string str;
+                        bool found = false;
+                        if (findtable.is_open()){
+                            while (getline(findtable,str)){
+                                if (str == name){
+                                    found = true;
+                                    tables[name] = Table(name);
+                                    Table selected = tables[name].select_all_plus_condition(condition);
+                                    recnos.clear();
+                                    recnos = selected.select_recnos();
+                                    return selected;
+                                }
+                            }
+                        }
+                        findtable.close();
+                        if (!found){
+                            recnos.clear();
+                            return Table();
+                        }
                     }
-                    // cout << "---------------------------------------"<<endl;
-                    // cout << tables[name] << endl;
-                    // cout << "---------------------------------------"<<endl;
                     Table selected = tables[name].select_all_plus_condition(condition);
-                    //cout << selected << endl;
                     recnos.clear();
                     recnos = selected.select_recnos();
                     return selected;
@@ -56,16 +69,29 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all() "<<endl;
                     if (tables.find(name) == tables.end()){
-                        //cout << "HERE "<<endl;
-                        recnos.clear();
-                        return Table();
+                        ifstream findtable(table_names);
+                        string str;
+                        bool found = false;
+                        if (findtable.is_open()){
+                            while (getline(findtable,str)){
+                                // cout << "str [" << str << "] name [" << name << "]"<< endl; 
+                                if (str == name){
+                                    found = true;
+                                    tables[name] = Table(name);
+                                    recnos.clear();
+                                    recnos = tables[name].select_recnos();
+                                    return tables[name];
+                                }
+                            }
+                        }
+                        findtable.close();
+                        if (!found){
+                            recnos.clear();
+                            return Table();
+                        }
                     }
-                    // Table selected = tables[name].select_all();
                     recnos.clear();
-                    // recnos = selected.select_recnos();
                     recnos = tables[name].select_recnos();
-                    // cout << recnos << endl;
-                    // cout << selected << endl;
                     return tables[name];
                 }
             }
@@ -76,20 +102,33 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select(ptree[fields], condition) "<<endl
                     if (tables.find(name) == tables.end()){
-                        recnos.clear();
-                        return Table();
+                        ifstream findtable(table_names);
+                        string str;
+                        bool found = false;
+                        if (findtable.is_open()){
+                            while (getline(findtable,str)){
+                                if (str == name){
+                                    found = true;
+                                    tables[name] = Table(name);
+                                    Table selected = tables[name].select(ptree["fields"], condition);
+                                    recnos.clear();
+                                    recnos = selected.select_recnos();
+                                    return selected;
+                                }
+                            }
+                        }
+                        findtable.close();
+                        if (!found){
+                            recnos.clear();
+                            return Table();
+                        }
                     }
-                    // cout << "-------------------------"<<endl;
-                    // cout << ptree["fields"] << endl;
-                    // cout << "-------------------------"<<endl;
-                    // cout << condition << endl;
                     Table selected = tables[name].select(ptree["fields"], condition);
                     // cout << "printing selecteddddddddddddddddddddddddddddddd"<<endl;
                     // cout << selected << endl;
                     recnos.clear();
                     recnos = selected.select_recnos();
                     // cout << recnos << endl;
-                    // cout << "should be 2 1 0 3" << endl;
                     return selected;
                 }
                 else{
@@ -97,8 +136,26 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_specific_fields_no_condition(ptree[fields])"<<endl;
                     if (tables.find(name) == tables.end()){
-                        recnos.clear();
-                        return Table();
+                        ifstream findtable(table_names);
+                        string str;
+                        bool found = false;
+                        if (findtable.is_open()){
+                            while (getline(findtable,str)){
+                                if (str == name){
+                                    found = true;
+                                    tables[name] = Table(name);
+                                    Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
+                                    recnos.clear();
+                                    recnos = selected.select_recnos();
+                                    return selected;
+                                }
+                            }
+                        }
+                        findtable.close();
+                        if (!found){
+                            recnos.clear();
+                            return Table();
+                        }
                     }
                     Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
                     //cout << selected << endl;
@@ -111,21 +168,39 @@ class SQL{
         else{
             if (ptree["command"][0] == "make" || ptree["command"][0] =="create"){
                 string name = ptree["table_name"][0];
+                ofstream tablenames(table_names, ios::app);
+                if (tablenames.is_open()){
+                    // cout << "NAME " << name << endl;
+                    // cout << "EVEN HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<endl;
+                    tablenames << name << endl;
+                }
+                tablenames.close();
                 tables[name] = Table(name, ptree["col"]);
                 //cout << tables[name] << endl;
                 return tables[name];
             }
             else if (ptree["command"][0] == "insert"){
                 string name = ptree["table_name"][0];
-                // cout << "~~~~~~~~~inside insert~~~~~~~~~~~~~~~~~~"<<endl;
-                // cout << ptree["values"] << endl;
-                // vector<string> check = ptree["values"];
-                // for (int i = 0; i < check.size(); i++){
-                //     cout << check[i]<<endl;
-                // }
                 if (tables.find(name) == tables.end()){
-                    recnos.clear();
-                    return Table();
+                    ifstream findtable(table_names);
+                    string str;
+                    bool found = false;
+                    if (findtable.is_open()){
+                        cout << "EVEN HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<endl;
+                        while (getline(findtable,str)){
+                            if (str == name){
+                                found = true;
+                                tables[name] = Table(name);
+                                tables[name].insert_into(ptree["values"]);
+                                return tables[name];
+                            }
+                        }
+                    }
+                    findtable.close();
+                    if (!found){
+                        recnos.clear();
+                        return Table();
+                    }
                 }
                 tables[name].insert_into(ptree["values"]);
                 //cout << tables[name] << endl;
@@ -144,7 +219,10 @@ class SQL{
     Map<string, Table> tables;
     mmap_ss ptree;
     vector<long>recnos;
+    const string table_names = "tablenames.txt";
 };
 
 
 #endif
+
+

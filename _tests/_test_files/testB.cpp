@@ -38,20 +38,26 @@ bool test_stub(bool debug = false)
 };
  SQL sql;
  Table t;
-  for (int i = 0; i < insertlist.size(); i++){
-    if (i == insertlist.size()-1){
-      cout << sql.command(insertlist[i]) << endl;
-    }
-    else
-    sql.command(insertlist[i]);
-  }
+  // for (int i = 0; i < insertlist.size(); i++){
+  //   if (i == insertlist.size()-1){
+  //     cout << sql.command(insertlist[i]) << endl;
+  //   }
+  //   else
+  //   sql.command(insertlist[i]);
+  // }
     const vector<string> commandlines = {
-      "select * from student where major >= CS",
-      "select lname, fname from student where fname = Nat",
-"select fname,major,lname from student where lname = \"Yao Mi\"",
-"create table job fields name, age, job",
-"insert into job values jackie chan engineer",
-"select * from student"
+      
+      "select * from employee"
+//       "select * from student where major >= CS",
+//       "select lname, fname from student where fname = Nat",
+// "select fname,major,lname from student where lname = \"Yao Mi\"",
+// "create table job fields name, lname, job",
+// "insert into job values jackie, chan, \"movie star\"",
+// "insert into job values mary, chan, \"chef\"",
+// "insert into job values lowie, marsel, \"movie star\"",
+// "select * from job",
+// "select * from job where lname = \"chan\" and fname = jackie or job = chef",
+// "select * from job where fname > lowie"
 // "select fname, lname from student where fname = \"Mary Ann\"",
 // "select * from student where fname = \"MaryAnn\"",
 // "select * from student where lname = Jackson",

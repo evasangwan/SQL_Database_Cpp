@@ -20,12 +20,9 @@
 #include "../binary_files/filerecord.h"
 #include "../Token/rpn.h"
 #include "../Token/shuntingyard.h"
-
 using namespace std;
-
 class Table{
     public:
-
         Table(){
             num = 0;
             string s = "temp";
@@ -38,7 +35,6 @@ class Table{
             mmap.clear();                  
             field_map.clear(); 
         }
-
         Table(const string& name, vector<string>fieldnames){
             num = 0;
             selectrecnos.clear();
@@ -70,6 +66,7 @@ class Table{
             f.close();
         }
         Table(const string& s){ //opens an existing table
+            selectrecnos.clear();
             num = 0;
             string name = s + ".txt";
             ifstream getdata(name);
@@ -101,13 +98,13 @@ class Table{
                 for (int i = 0; i < data.size(); i++){
                     mmap[i].insert(data[i], recno);
                 }
+                selectrecnos.push_back(recno);
                 recno++;
                 num++;
                 r.read(f, recno);
             }
             f.close();
         }
-
         void insert_into(vector<string> v){
             // cout << "INSIDE INSER INTO "<<endl; 
             // cout << "inserted: " << endl;
@@ -127,7 +124,6 @@ class Table{
             // cout << mmap << endl;
             f.close();
         }
-
         Table select_all(){
             //cout << "file_name " << file_name << endl;
             set_fields.clear();
@@ -198,7 +194,6 @@ class Table{
             // cout << selected.select_recnos() << endl;
             return selected;
         }
-
         Table select_specific_fields_no_condition(vector<string>&fields){
             // num = 0;
             string name = file_name;
@@ -261,7 +256,6 @@ class Table{
             f.close();
             return selected; 
         }
-
         Table select(vector<string>fields,vector<string> conditions){
             set_fields.clear();
             set_fields = fields;
@@ -316,7 +310,6 @@ class Table{
             // cout << "-------------------------------------------------------------"<<endl;
             return selected;
         }
-
         Table select(vector<string> fields, Queue<TToken*> post){
             set_fields.clear();  //added this !!! in case all hell breaks loose
             set_fields = fields;
@@ -344,15 +337,12 @@ class Table{
             return selected;
         }
         
-
         vector<long> select_recnos(){
             return selectrecnos;
         }
-
         int getnum(){
             return num;
         }
-
         friend ostream& operator<<(ostream& outs, const Table& t){
             fstream j;
             FileRecord r;
@@ -370,8 +360,6 @@ class Table{
             j.close();
             return outs;
         }
-
-
     private:
     vector<MMap<string,long>> mmap;
     Map<string,long> field_map;
@@ -382,8 +370,5 @@ class Table{
     vector<long> selectrecnos;
     static int serial;
 };
-
 int Table::serial = 1;
-
-
 #endif
