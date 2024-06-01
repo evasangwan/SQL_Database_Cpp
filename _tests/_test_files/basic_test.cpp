@@ -36,7 +36,7 @@ const vector<string> command_list = {
 /*15*/     "select * from employee where last=Blow and major=\"JoAnn\"",
 
 /*16*/     "select * from student",
-/*17*/     "select * from student where (major=Art or major =CS)",
+/*17*/     "select * from student where (major=CS or major =Art)",
 /*18*/     "select * from student where lname>J",
 /*19*/     "select * from student where lname>J and (major=CS or major=Art)"
 
@@ -74,6 +74,7 @@ bool sql_basic(bool debug = false)
                cout<< sql.command(command_list[i])<<endl;
           else
                t = sql.command(command_list[i]);
+               cout << t << endl;
           cout << "basic_test: records selected: "<< sql.select_recnos() << endl;
      }
 

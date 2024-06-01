@@ -12,7 +12,7 @@ bool test_stub(bool debug = false)
   }
   const vector<string> insertlist = {
 /*05*/     "create table student fields  fname,          lname,    major,    age",
-/*06*/     "insert into student values Flo,            Yao, 	Art, 	20",
+/*06*/     "insert into student values Flo,            \"Yao Mi\", 	Art, 	20",
 /*07*/     "insert into student values Bo, 		     Yang, 	CS, 		28",
 /*08*/     "insert into student values \"Sam\", Jackson, 	CS, 		40",
 /*09*/     "insert into student values \"Billy\",	     Jackson, 	Math,	27",
@@ -21,7 +21,7 @@ bool test_stub(bool debug = false)
 /*07*/     "insert into student values Mark, 		     Yao, 	CS, 		20",
 /*08*/     "insert into student values \"Sam L.\", Davis, 	CS, 		30",
 /*09*/     "insert into student values \"Bill\",	     Davis, 	CS,	18",
-/*10*/     "insert into student values \"Marilym\",   Davis,	Math,	30",
+/*10*/     "insert into student values \"Mary Ann\",   Davis,	Math,	30",
 
 };
  SQL sql;
@@ -34,10 +34,17 @@ bool test_stub(bool debug = false)
     sql.command(insertlist[i]);
   }
     const vector<string> commandlines = {
-// "select * from student",
-/*17*/     "select * from student where (major=Art or major =CS)",
-/*18*/     "select * from student where lname>J",
-/*19*/     "select * from student where lname>J and (major=CS or major=Art)"
+      // "select * from student where major >= CS"
+//       "select lname, fname from student where fname = Nat",
+// "select lname from student where lname = \"Yao Mi\"",
+// "select fname, lname from student where fname = \"Mary Ann\"",
+"select * from student where fname = \"MaryAnn\"",
+// "select age,lname,fname from student where major = CS",
+// "select * from student where lname = \"Davis\"",
+// "select major from jjj",
+// /*17*/     "select * from student where (major=Art or major =CS)",
+// /*18*/     "select * from student where lname>J",
+// /*19*/     "select * from student where lname>J and (major=CS or major=Art)"
 };
 for (int i = 0; i < commandlines.size(); i++){
   cout << commandlines[i] << endl;

@@ -247,6 +247,11 @@ class Parser{
             t = Token();
             stk>>t;
         }
+        // cout << "********************************************************************************"<<endl;
+        // cout << "********************************************************************************"<<endl;
+        // cout << inputq << endl;
+        // cout << "********************************************************************************"<<endl;
+        // cout << "********************************************************************************"<<endl;
         fix_vect();
         for (int i = 0; i < inputq.size(); i++){
             queue.push(inputq[i]);
@@ -266,6 +271,8 @@ class Parser{
                 insidequotes = true;
                 count++;
                 if (count == 2){
+                    combine.pop_back();  //getting rid of extra space
+                    //cout << "combine " << "[" << combine << "]"<< endl;
                     fixed.push_back(combine);
                     insidequotes = false;
                     count = 0;
@@ -274,6 +281,7 @@ class Parser{
             }
             else if (insidequotes && count < 2){
                 combine += inputq[i];
+                combine+=" ";
             }
             else{
                 if (inputq[i] != ","){
