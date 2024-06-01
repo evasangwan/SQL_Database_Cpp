@@ -170,13 +170,28 @@ class SQL{
                 string name = ptree["table_name"][0];
                 ofstream tablenames(table_names, ios::app);
                 if (tablenames.is_open()){
-                    // cout << "NAME " << name << endl;
-                    // cout << "EVEN HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<endl;
-                    tablenames << name << endl;
+                    ifstream findtable(table_names);
+                    string str;
+                    bool found = false;
+                    if (findtable.is_open()){
+                        while (getline(findtable,str)){
+                            if (str == name){
+                                found = true;
+                                tables[name] = Table(name, ptree["col"]);
+                                recnos.clear();
+                                recnos = tables[name].select_recnos();
+                                return tables[name];;
+                            }
+                        }
+                    }
+                    findtable.close();
+                    if (!found){
+                        tablenames << name << endl;
+                    }
+                    
                 }
                 tablenames.close();
                 tables[name] = Table(name, ptree["col"]);
-                //cout << tables[name] << endl;
                 return tables[name];
             }
             else if (ptree["command"][0] == "insert"){

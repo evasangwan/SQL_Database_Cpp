@@ -47,7 +47,8 @@ bool test_stub(bool debug = false)
   // }
     const vector<string> commandlines = {
       
-      "select * from employee"
+      "select * from employee",
+      "select fname from employee"
 //       "select * from student where major >= CS",
 //       "select lname, fname from student where fname = Nat",
 // "select fname,major,lname from student where lname = \"Yao Mi\"",
