@@ -122,7 +122,7 @@ class Table{
         Table select_all(){
             //cout << "file_name " << file_name << endl;
             set_fields.clear();
-            num = 0;
+            // num = 0;
             string open = file_name;
             open += ".txt";
             ifstream getdata(open);
@@ -152,12 +152,13 @@ class Table{
                 selected.insert_into(data);
                 recnos.push_back(recno);
                 recno++;
+                selected.num++;
                 r.read(f, recno);
             }
             f.close();
             // cout << "HELLO"<<endl;
             // cout << recnos << endl;
-            selected.num = recno;
+            // selected.num = recno;
             selectrecnos.clear();
             selected.selectrecnos = recnos;
             // cout << selectrecnos << endl;
@@ -191,7 +192,7 @@ class Table{
         }
 
         Table select_specific_fields_no_condition(vector<string>&fields){
-            num = 0;
+            // num = 0;
             string name = file_name;
             name += "_" + to_string(serial++);
             Table selected(name, fields);
@@ -214,15 +215,13 @@ class Table{
                 }
                 selected.insert_into(filtered);
                 recnos.push_back(recno);
+                selected.num++;
                 recno++;
                 r.read(f, recno);
             }
             f.close();
-            selected.num = recno;
             selected.selectrecnos.clear();
             selected.selectrecnos = recnos;
-            int d = 0; 
-            assert(d=1);
             return selected;
         }
         
@@ -263,7 +262,7 @@ class Table{
             // cout << set_fields << endl;
             string name = file_name;
             name += "_" + to_string(serial++);
-            string s = file_name;
+            // string s = file_name;
             // Table selected(s);
             Table selected(name,set_fields);
             // cout << "printing selected "<<endl;
@@ -303,6 +302,7 @@ class Table{
             // cout << "RECS"<<endl;
             // cout << recs << endl;
             selected.selectrecnos = recs;
+            recs.clear();
             f.close();
             // cout << "testing to see if they r the same tbale " << endl;
             // cout << selected << endl;
