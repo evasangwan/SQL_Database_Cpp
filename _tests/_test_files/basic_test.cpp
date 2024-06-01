@@ -38,7 +38,19 @@ const vector<string> command_list = {
 /*16*/     "select * from student",
 /*17*/     "select * from student where (major=CS or major=Art)",
 /*18*/     "select * from student where lname>J",
-/*19*/     "SELECT * frOm student wheRe lname>J and (major=CS or major=Art)"
+/*19*/     "SELECT * frOm student wheRe lname>J and (major=CS or major=Art)",
+/*00*/"select * from student where (fname = \"Flo\" and lname = \"Yao\")",
+/*01*/"select * from student where (major = \"CS\") and (age < 25)",
+/*02*/"select * from student where (major < Math or age > 25)",
+/*03*/"select * from employee where dep = CS and (salary > 150000)",
+/*04*/"select * from employee where last = Jackson and (year <= 2020 and year >=2010)",
+/*05*/"select * from employee where last = Johnson or (age > 23)",
+"select * from student where (fname = Flo or lname = Jackson) or (fname = B or lname = Johnson)",
+/*07*/"select * from student where (age >=40  or major = CS) and first > B",
+/*08*/"select * from employee where first = Bo or last = Johnson and (first > B)",
+"select * from student where age > 20 and (fname = Flo or fname = Alex )",
+// "select * from student where age < 50 and (fname = \"Teresa Mae\" or lname = Jackson)",
+"select * from student where age < 50 and (fname = \"Teresa Mae\" or lname = Jackson and (age > 10 and (major = CS or major = Math)))"
 
 };
 

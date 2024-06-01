@@ -268,6 +268,7 @@ class Table{
             Table selected(name,set_fields);
             // cout << "printing selected "<<endl;
             // cout << selected << endl;
+            //cout << "conditions " << conditions << endl;
             ShuntingYard sy(conditions);
             Queue<TToken*> post = sy.postfix();
             // cout << "POST "<<endl;

@@ -25,6 +25,9 @@ class RPN{
     }
     
     vector<long> condition(Map<string,long> &field_map, vector<MMap<string,long>> &mmap){
+        // cout << "*********************************************"<<endl;
+        // cout << _postfix << endl;
+        // cout << "*********************************************"<<endl;
         Stack<TToken*> stack;
         Queue<TToken*>::Iterator it = _postfix.begin();
         while (!it.is_null()){

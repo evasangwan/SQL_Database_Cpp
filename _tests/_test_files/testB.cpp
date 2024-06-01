@@ -11,44 +11,49 @@ bool test_stub(bool debug = false)
     cout << "testB:: test-sub() entering test_sub" << endl;
   }
   const vector<string> insertlist = {
-/*05*/     "create table student fields  fname,          lname,    major,    age",
-/*06*/     "insert into student values Flo,               \"Yao Mi\", 	Art, 	20",
-/*07*/     "insert into student values Bo, 		           Yang, 	CS, 		28",
-/*08*/     "insert into student values \"Sam\",          Jackson, 	CS, 		40",
-/*09*/     "insert into student values \"Billy\",	       Jackson, 	Math,	27",
-/*10*/     "insert into student values \"Mary Ann\",     Davis,	Math,	30",
-           "insert into student values Nat,             Davis, 	Art, 	22",
-/*07*/     "insert into student values Mark, 		         Yao, 	CS, 		20",
-/*08*/     "insert into student values \"Sam L.\",      Davis, 	CS, 		30",
-/*09*/     "insert into student values \"Bill\",	      Davis, 	CS,	18",
-/*10*/     "insert into student values \"Mary Ann\",    Dalvis,	Art,	22",
-           "insert into student values \"Michael O'Connor\",     Markus,	CS,	30",
-           "insert into student values Flora,               \"Yao Mi\", 	CS, 	20",
-/*07*/     "insert into student values Borja, 		           M, 	CS, 		28",
-/*08*/     "insert into student values \"Sam Kay\",          Hell, 	CS, 		40",
-/*09*/     "insert into student values \"Billy\",	       Jackson, 	Math,	27",
-/*10*/     "insert into student values \"Mary Ann\",     Jell,	Math,	30",
-           "insert into student values Natalie,             Davis, 	Art, 	22",
-/*07*/     "insert into student values Markle, 		         Yao, 	CS, 		20",
-/*08*/     "insert into student values \"Sammy L.\",      Jackson, 	CS, 		30",
-/*09*/     "insert into student values \"Billy\",	      Davis, 	CS,	18",
-/*10*/     "insert into student values \"Mary Ann\",    Dalvis,	Math,	22",
-           "insert into student values \"Michael O'Connor\",     Nor,	CS,	30",
+/*05*/     "create table students fields  fname,          lname,    major,    age",
+/*06*/     "insert into students values Flo,               \"Yao Mi\", 	Art, 	20",
+/*07*/     "insert into students values Bo, 		           Yang, 	CS, 		28",
+/*08*/     "insert into students values \"Sam\",          Jackson, 	CS, 		40",
+/*09*/     "insert into students values \"Billy\",	       Jackson, 	Math,	27",
+/*10*/     "insert into students values \"Mary Ann\",     Davis,	Math,	30",
+           "insert into students values Nat,             Davis, 	Art, 	22",
+/*07*/     "insert into students values Mark, 		         Yao, 	CS, 		20",
+/*08*/     "insert into students values \"Sam L.\",      Davis, 	CS, 		30",
+/*09*/     "insert into students values \"Bill\",	      Davis, 	CS,	18",
+/*10*/     "insert into students values \"Mary Ann\",    Dalvis,	Art,	22",
+           "insert into students values \"Michael O'Connor\",     Markus,	CS,	30",
+           "insert into students values Flora,               \"Yao Mi\", 	CS, 	20",
+/*07*/     "insert into students values Borja, 		           M, 	CS, 		28",
+/*08*/     "insert into students values \"Sam Kay\",          Hell, 	CS, 		40",
+/*09*/     "insert into students values \"Billy\",	       Jackson, 	Math,	27",
+/*10*/     "insert into students values \"Mary Ann\",     Jell,	Math,	30",
+           "insert into students values Natalie,             Davis, 	Art, 	22",
+/*07*/     "insert into students values Markle, 		         Yao, 	CS, 		20",
+/*08*/     "insert into students values \"Sammy L.\",      Jackson, 	CS, 		30",
+/*09*/     "insert into students values \"Billy\",	      Davis, 	CS,	18",
+/*10*/     "insert into students values \"Mary Ann\",    Dalvis,	Math,	22",
+           "insert into students values \"Michael O'Connor\",     Nor,	CS,	30",
 
 };
  SQL sql;
  Table t;
-  // for (int i = 0; i < insertlist.size(); i++){
-  //   if (i == insertlist.size()-1){
-  //     cout << sql.command(insertlist[i]) << endl;
-  //   }
-  //   else
-  //   sql.command(insertlist[i]);
-  // }
+  for (int i = 0; i < insertlist.size(); i++){
+    if (i == insertlist.size()-1){
+      cout << sql.command(insertlist[i]) << endl;
+    }
+    else
+    sql.command(insertlist[i]);
+  }
     const vector<string> commandlines = {
       
+      // "Select * From employee",
       "select * from employee",
-      "select fname from employee"
+      "SELECT fname FROM employee",
+      // "selECT lname, fname, major frOM student where (major = CS ) and major = CS and ()"
+      "select * from students",
+      "select * from students where age > 19 and (lname = Jackson or major = Math and fname = \"Mary Ann\")",
+      "select * from student where age < 50 and (fname = \"Teresa Mae\" or lname = Jackson and (age > 10 and (major = CS or major = Math)))"
 //       "select * from student where major >= CS",
 //       "select lname, fname from student where fname = Nat",
 // "select fname,major,lname from student where lname = \"Yao Mi\"",

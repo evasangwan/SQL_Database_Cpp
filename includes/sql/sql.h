@@ -69,12 +69,17 @@ class SQL{
                     //cout << "-------------------------"<<endl;
                     //cout << "firing select_all() "<<endl;
                     if (tables.find(name) == tables.end()){
-                        ifstream findtable(table_names);
                         string str;
                         bool found = false;
+                        // cout << "filename is " << table_names << endl;
+                        ifstream findtable(table_names);
+                        // ifstream findtable(file_path);
+                        // ifstream findtable("../../build/bin/filenames.txt");
+                        // ifstream findtable(table_names);
+                        // findtable.open(table_names,ios::in);
                         if (findtable.is_open()){
                             while (getline(findtable,str)){
-                                // cout << "str [" << str << "] name [" << name << "]"<< endl; 
+                                //cout << "str [" << str << "] name [" << name << "]"<< endl; 
                                 if (str == name){
                                     found = true;
                                     tables[name] = Table(name);
@@ -192,6 +197,8 @@ class SQL{
                 }
                 tablenames.close();
                 tables[name] = Table(name, ptree["col"]);
+                recnos.clear();
+                recnos = tables[name].select_recnos();
                 return tables[name];
             }
             else if (ptree["command"][0] == "insert"){
@@ -201,7 +208,6 @@ class SQL{
                     string str;
                     bool found = false;
                     if (findtable.is_open()){
-                        cout << "EVEN HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<endl;
                         while (getline(findtable,str)){
                             if (str == name){
                                 found = true;

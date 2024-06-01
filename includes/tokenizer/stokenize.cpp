@@ -27,7 +27,7 @@ bool STokenizer::get_token(int& start_state, string& token){
 void STokenizer::make_table(int _table[][MAX_COLUMNS]){
     init_table(_table);
     mark_fail(_table,0);
-    for (int i = 1; i < 10;i++){
+    for (int i = 1; i < 13;i++){
         mark_success(_table,i);
     }
     mark_fail(_table,6);
@@ -51,9 +51,12 @@ void STokenizer::make_table(int _table[][MAX_COLUMNS]){
     mark_cell(0,_table,34,9);  //quotation marks
     mark_cell(9,_table,34,9);  //40 is ( 41 is )
     mark_cell(0,_table,40,8);  
-    mark_cell(8,_table,40,8);
+    // mark_cell(8,_table,40,8);
+    mark_cell(8,_table,40,12);
     mark_cell(0,_table,41,8);  
-    mark_cell(8,_table,41,8);
+    // mark_cell(8,_table,41,8);
+      
+    mark_cell(8,_table,41,12);
     //cout << "#" <<  _table[0][35] << endl;
 }
 

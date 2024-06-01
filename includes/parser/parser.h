@@ -298,7 +298,7 @@ class Parser{
                 insidequotes = true;
                 count++;
                 if (count == 2){
-                    //cout << "[" << inside << "]" << endl;
+                    // cout << "isnide : [" << inside << "]" << endl;
                     inputq.push_back(inside);
                     insidequotes = false;
                     count = 0;
@@ -319,12 +319,23 @@ class Parser{
         // cout << inputq << endl;
         // cout << "********************************************************************************"<<endl;
         // cout << "********************************************************************************"<<endl;
+        //  for (int i = 0; i < inputq.size(); i++){
+        //     cout << "["<<inputq[i]<<"]"<<endl;
+        // }
+        // cout << "now calling fix vec"<<endl;
         fix_vect();
         for (int i = 0; i < inputq.size(); i++){
             queue.push(inputq[i]);
         }
         //cout << queue << endl;
-        // cout << inputq << endl;
+        // cout << "********************************************************************************"<<endl;
+        // cout << "********************************here************************************************"<<endl;
+        // for (int i = 0; i < inputq.size(); i++){
+        //     cout << "["<<inputq[i]<<"]"<<endl;
+        // }
+        // cout << "********************************************************************************"<<endl;
+        // cout << "*******************************end*************************************************"<<endl;
+        
     }    
 
 

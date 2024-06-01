@@ -10,7 +10,7 @@ void _print_list(node<T>* head){
     node<T>* walker = head;
     cout << "Head->";
     while (walker != nullptr){
-        cout << " <-[" << walker->_item << "]-> ";
+        cout << " <-[" << *walker->_item << "]-> ";
         walker = walker->_next;
     }
     cout << " |||";
