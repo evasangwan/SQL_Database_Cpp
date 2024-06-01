@@ -48,7 +48,12 @@ class Table{
             ofstream txtfile(name + ".txt");
             if (txtfile.is_open()){
                 for (int i = 0; i < fieldnames.size(); i++){
-                    txtfile << fieldnames[i] << endl;
+                    if (i == fieldnames.size()-1){
+                        txtfile << fieldnames[i];
+                    }
+                    else{
+                        txtfile << fieldnames[i] << endl;
+                    }
                 }
             }
             txtfile.close();

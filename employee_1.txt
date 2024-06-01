@@ -1,5 +1,2 @@
-last
-first
-dep
-salary
-year
+fname
+age
