@@ -77,7 +77,13 @@ class SQL{
                         recnos.clear();
                         return Table();
                     }
+                    // cout << "-------------------------"<<endl;
+                    // cout << ptree["fields"] << endl;
+                    // cout << "-------------------------"<<endl;
+                    // cout << condition << endl;
                     Table selected = tables[name].select(ptree["fields"], condition);
+                    // cout << "printing selecteddddddddddddddddddddddddddddddd"<<endl;
+                    // cout << selected << endl;
                     recnos.clear();
                     recnos = selected.select_recnos();
                     // cout << recnos << endl;
@@ -120,7 +126,7 @@ class SQL{
                     return Table();
                 }
                 tables[name].insert_into(ptree["values"]);
-                //cout << tables[name] << endl;
+                cout << tables[name] << endl;
                 return tables[name];
             }
         }

@@ -278,6 +278,7 @@ class Parser{
                 insidequotes = true;
                 count++;
                 if (count == 2){
+                    //cout << "[" << inside << "]" << endl;
                     inputq.push_back(inside);
                     insidequotes = false;
                     count = 0;

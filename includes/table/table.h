@@ -277,7 +277,13 @@ class Table{
                 r.read(f, recs[i]);
                 vector<string> filtered; 
                 for (int k = 0; k < fields.size(); k++){
-                    long index = selected.field_map[fields[k]];
+                    // cout << "fields["<< k << "] " << fields[k] << endl;
+                    long index = field_map[fields[k]];
+                    // cout << "index " << index << endl;
+                    // cout <<" r data " << r.data << endl;
+                    // for (int i = 0; i < r.data.size(); i++){
+                    //     cout << "["<< r.data[i]<< "]"<<endl;
+                    // }
                     filtered.push_back(r.data[index]);
                 }
                 selected.insert_into(filtered);
