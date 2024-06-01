@@ -37,10 +37,10 @@ class Table{
         }
 
         Table(const string& name, vector<string>fieldnames){
+            num = 0;
             selectrecnos.clear();
             set_fields.clear();
             set_fields = fieldnames;
-            num = 0;
             strcpy(file_name,name.c_str());
             ofstream txtfile(name + ".txt");
             if (txtfile.is_open()){
@@ -152,7 +152,6 @@ class Table{
                 selected.insert_into(data);
                 recnos.push_back(recno);
                 recno++;
-                selected.num++;
                 r.read(f, recno);
             }
             f.close();
@@ -215,7 +214,6 @@ class Table{
                 }
                 selected.insert_into(filtered);
                 recnos.push_back(recno);
-                selected.num++;
                 recno++;
                 r.read(f, recno);
             }
@@ -297,7 +295,7 @@ class Table{
                 }
                 selected.insert_into(filtered);
             }
-            selected.num = recs.size();
+            // selected.num = recs.size();
             selected.selectrecnos.clear();
             // cout << "RECS"<<endl;
             // cout << recs << endl;

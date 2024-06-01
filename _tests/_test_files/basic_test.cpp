@@ -30,7 +30,7 @@ const vector<string> command_list = {
 /*10*/     "insert into student values \"Mary Ann\",   Davis,	Math,	30",
 
 /*11*/     "select * from employee",
-/*12*/     "select last, first, age from employee",
+/*12*/     "select ff, maba, age from employee",
 /*13*/     "select last from employee",
 /*14*/     "select * from employee where last = Johnson",
 /*15*/     "select * from employee where last=Blow and major=\"JoAnn\"",
