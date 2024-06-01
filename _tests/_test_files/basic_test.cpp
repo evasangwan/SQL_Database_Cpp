@@ -16,13 +16,13 @@ using namespace std;
 
 const vector<string> command_list = {
 
-/*00*/     "create table employee fields  last,       first,         dep,      salary, year",
+/*00*/     "make table employee fields  last,       first,         dep,      salary, year",
 /*01*/     "insert into employee values Blow,       Joe,           CS,       100000, 2018",
 /*02*/     "insert into employee values Blow,       JoAnn,         Physics,  200000, 2016",
 /*03*/     "insert into employee values Johnson,    Jack,          HR,       150000, 2014",
 /*04*/     "insert into employee values Johnson,    \"Jimmy\",     Chemistry,140000, 2018",
 
-/*05*/     "create table student fields  fname,          lname,    major,    age",
+/*05*/     "make table student fields  fname,          lname,    major,    age",
 /*06*/     "insert into student values Flo,            Yao, 	Art, 	20",
 /*07*/     "insert into student values Bo, 		     Yang, 	CS, 		28",
 /*08*/     "insert into student values \"Sammuel L.\", Jackson, 	CS, 		40",
@@ -36,7 +36,7 @@ const vector<string> command_list = {
 /*15*/     "select * from employee where last=Blow and major=\"JoAnn\"",
 
 /*16*/     "select * from student",
-/*17*/     "select * from student where (major=CS or major =Art)",
+/*17*/     "select * from student where (major=CS or major=Art)",
 /*18*/     "select * from student where lname>J",
 /*19*/     "select * from student where lname>J and (major=CS or major=Art)"
 
@@ -55,8 +55,6 @@ bool sql_basic(bool debug = false)
 
      for (int i = 0; i < MAKE_TABLE_COMMANDS; i++)
      {
-     //      for (int i = 0; i < 5; i++)
-     // {
           cout << ">" << command_list[i] << endl;
           sql.command(command_list[i]);
      }
@@ -65,17 +63,13 @@ bool sql_basic(bool debug = false)
           << endl;
      for (int i = MAKE_TABLE_COMMANDS; i < command_list.size(); i++)
      {
-     //      for (int i = 19; i < command_list.size(); i++)
-     // {
-     //       for (int i = MAKE_TABLE_COMMANDS; i < 15; i++)
-     // {
           cout << "\n>" << command_list[i] << endl;
           if (debug)
                cout<< sql.command(command_list[i])<<endl;
           else
                t = sql.command(command_list[i]);
                cout << t << endl;
-          cout << "basic_test: records selected: "<< sql.select_recnos() << endl;
+          cout << "basic_test: records selected: "<<sql.select_recnos() << endl;
      }
 
      cout << "----- END TEST --------" << endl;

@@ -126,7 +126,7 @@ class SQL{
                     return Table();
                 }
                 tables[name].insert_into(ptree["values"]);
-                cout << tables[name] << endl;
+                //cout << tables[name] << endl;
                 return tables[name];
             }
         }

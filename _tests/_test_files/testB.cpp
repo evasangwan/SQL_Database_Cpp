@@ -75,4 +75,3 @@ int main(int argc, char **argv) {
   std::cout<<"\n\n----------running testB.cpp---------\n\n"<<std::endl;
   return RUN_ALL_TESTS();
 }
-

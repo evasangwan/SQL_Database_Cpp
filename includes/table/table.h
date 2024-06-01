@@ -31,6 +31,9 @@ class Table{
             string s = "";
             strcpy(file_name,s.c_str());
             selectrecnos.clear();
+            set_fields.clear();     
+            mmap.clear();                  
+            field_map.clear(); 
         }
 
         Table(const string& name, vector<string>fieldnames){
@@ -198,10 +201,15 @@ class Table{
             long recno = 0;
             vector<long> recnos;
             r.read(f, recno);    
+            // cout << "-----------------------------------------------"<<endl;
+            // cout << field_map << endl;
+            // cout << "-----------------------------------------------" << endl;
             while (!f.eof()) {
                 vector<string> filtered; 
                 for (int k = 0; k < fields.size(); k++){
+                    // cout << "fields " << fields[k]<<endl;
                     long index = field_map[fields[k]];
+                    // cout << "index " << index << endl;
                     filtered.push_back(r.data[index]);
                 }
                 selected.insert_into(filtered);
@@ -213,6 +221,8 @@ class Table{
             selected.num = recno;
             selected.selectrecnos.clear();
             selected.selectrecnos = recnos;
+            int d = 0; 
+            assert(d=1);
             return selected;
         }
         
