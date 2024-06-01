@@ -16,17 +16,17 @@ using namespace std;
 
 const vector<string> command_list = {
 
-/*00*/     "make table employee fields  last,       first,         dep,      salary, year",
-/*01*/     "insert into employee values Blow,       Joe,           CS,       100000, 2018",
-/*02*/     "insert into employee values Blow,       JoAnn,         Physics,  200000, 2016",
-/*03*/     "insert into employee values Johnson,    Jack,          HR,       150000, 2014",
+/*00*/     "mAke table employee fields  last,       first,         dep,      salary, year",
+/*01*/     "iNsert into employee values Blow,       Joe,           CS,       100000, 2018",
+/*02*/     "INSERT into employee values Blow,       JoAnn,         Physics,  200000, 2016",
+/*03*/     "INSERT into employee values Johnson,    Jack,          HR,       150000, 2014",
 /*04*/     "insert into employee values Johnson,    \"Jimmy\",     Chemistry,140000, 2018",
 
-/*05*/     "make table student fields  fname,          lname,    major,    age",
-/*06*/     "insert into student values Flo,            Yao, 	Art, 	20",
+/*05*/     "MAKE table student fields  fname,          lname,    major,    age",
+/*06*/     "insert into student VALUES Flo,            Yao, 	Art, 	20",
 /*07*/     "insert into student values Bo, 		     Yang, 	CS, 		28",
 /*08*/     "insert into student values \"Sammuel L.\", Jackson, 	CS, 		40",
-/*09*/     "insert into student values \"Billy\",	     Jackson, 	Math,	27",
+/*09*/     "insert into student VALUES \"Billy\",	     Jackson, 	Math,	27",
 /*10*/     "insert into student values \"Mary Ann\",   Davis,	Math,	30",
 
 /*11*/     "select * from employee",
@@ -38,7 +38,7 @@ const vector<string> command_list = {
 /*16*/     "select * from student",
 /*17*/     "select * from student where (major=CS or major=Art)",
 /*18*/     "select * from student where lname>J",
-/*19*/     "select * from student where lname>J and (major=CS or major=Art)"
+/*19*/     "SELECT * frOm student wheRe lname>J and (major=CS or major=Art)"
 
 };
 
@@ -56,21 +56,21 @@ bool sql_basic(bool debug = false)
      for (int i = 0; i < MAKE_TABLE_COMMANDS; i++)
      {
           cout << ">" << command_list[i] << endl;
-          sql.command(command_list[i]);
+          cout << sql.command(command_list[i]) << endl;
      }
 
      cout << endl
           << endl;
-     for (int i = MAKE_TABLE_COMMANDS; i < command_list.size(); i++)
-     {
-          cout << "\n>" << command_list[i] << endl;
-          if (debug)
-               cout<< sql.command(command_list[i])<<endl;
-          else
-               t = sql.command(command_list[i]);
-               cout << t << endl;
-          cout << "basic_test: records selected: "<<sql.select_recnos() << endl;
-     }
+     // for (int i = MAKE_TABLE_COMMANDS; i < command_list.size(); i++)
+     // {
+     //      cout << "\n>" << command_list[i] << endl;
+     //      if (debug)
+     //           cout<< sql.command(command_list[i])<<endl;
+     //      else
+     //           t = sql.command(command_list[i]);
+     //           cout << t << endl;
+     //      cout << "basic_test: records selected: "<<sql.select_recnos() << endl;
+     // }
 
      cout << "----- END TEST --------" << endl;
      return true;

@@ -6,6 +6,8 @@
 #include <string>
 #include <cstring>
 #include <cassert>
+#include <ctype.h>
+#include <algorithm>
 #include "../tokenizer/ftokenize.h"
 #include "../tokenizer/state_machine_functions.h"
 #include "../bplustree/multimap.h"
@@ -55,11 +57,17 @@ class Parser{
         string token = queue.pop();
         int state = 0;
         int col;
+        string keep = token;
+        for (int i = 0; i < token.size(); i++){
+            token[i] = tolower(token[i]);
+        }
+        //cout << "token before " << keep << " token after " << token << endl;
         if (keywords.contains(token)){
             col = keywords[token];
         }
         else{
             col = keywords["symbol"];
+            token = keep;
         }
         state = table[state][col];
         while (state != -1){
@@ -131,12 +139,24 @@ class Parser{
                 }
                
             }
-            //cout << "token " << token << endl;
+            // //cout << "token " << token << endl;
+            // if (keywords.contains(token)){
+            //     col = keywords[token];
+            // }
+            // else{
+            //     col = keywords["symbol"];
+            // }
+            string keep = token;
+            for (int i = 0; i < token.size(); i++){
+                token[i] = tolower(token[i]);
+            }
+            //cout << "token before " << keep << " token after " << token << endl;
             if (keywords.contains(token)){
                 col = keywords[token];
             }
             else{
                 col = keywords["symbol"];
+                token = keep;
             }
             state = table[state][col];
         }
