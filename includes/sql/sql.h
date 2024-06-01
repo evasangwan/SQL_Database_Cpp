@@ -60,12 +60,13 @@ class SQL{
                         recnos.clear();
                         return Table();
                     }
-                    Table selected = tables[name].select_all();
+                    // Table selected = tables[name].select_all();
                     recnos.clear();
-                    recnos = selected.select_recnos();
+                    // recnos = selected.select_recnos();
+                    recnos = tables[name].select_recnos();
                     // cout << recnos << endl;
                     // cout << selected << endl;
-                    return selected;
+                    return tables[name];
                 }
             }
             else {

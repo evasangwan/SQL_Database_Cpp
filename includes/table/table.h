@@ -104,7 +104,7 @@ class Table{
         }
 
         void insert_into(vector<string> v){
-            // cout << "INSIDE INSER INTO "<<endl;
+            // cout << "INSIDE INSER INTO "<<endl; 
             // cout << "inserted: " << endl;
             // cout << v << endl;
             // cout << "Mmap we're starting with " << endl;
@@ -116,6 +116,7 @@ class Table{
             for (int i = 0; i < v.size(); i++){
                 mmap[i].insert(v[i], recno);
             }
+            selectrecnos.push_back(recno);
             num++;
             // cout << "###################"<<endl;
             // cout << mmap << endl;

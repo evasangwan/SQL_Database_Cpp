@@ -58,7 +58,6 @@ bool sql_basic(bool debug = false)
           cout << ">" << command_list[i] << endl;
           cout << sql.command(command_list[i]) << endl;
      }
-
      cout << endl
           << endl;
      for (int i = MAKE_TABLE_COMMANDS; i < command_list.size(); i++)

@@ -51,7 +51,7 @@ bool test_stub(bool debug = false)
 "select fname,major,lname from student where lname = \"Yao Mi\"",
 "create table job fields name, age, job",
 "insert into job values jackie chan engineer",
-"select * from mamam"
+"select * from student"
 // "select fname, lname from student where fname = \"Mary Ann\"",
 // "select * from student where fname = \"MaryAnn\"",
 // "select * from student where lname = Jackson",
