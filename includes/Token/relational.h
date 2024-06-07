@@ -28,57 +28,44 @@ class Relational: public Operator{
     virtual double getPrecedence() override{
             return 3;
     }
-    vector<long> eval(MMap<string,long> &mmap, const string &val){
+    vector<long> eval(MMap<string, long>& mmap, const string& val){
         vector<vector<long>> recs;
         if (_rel == "="){
-            // cout << val <<endl;
-            // recs.push_back(mmap.get(val));
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
-                if ((*iter).key == val ){
-                    recs.push_back((*iter).value_list);
-                }
-                iter++;
+            MMap<string,long>::Iterator found = mmap.find(val);
+            if (found != mmap.end()){
+                recs.push_back((*found).value_list);
             }
-        }
-
-        if (_rel == "<"){
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
-                if ((*iter).key < val ){
-                    recs.push_back((*iter).value_list);
-                }
-                iter++;
+        } 
+        else if (_rel == "<"){
+            MMap<string,long>::Iterator end = mmap.lower_bound(val);
+            MMap<string,long>::Iterator begin = mmap.begin();
+            while (begin != end){
+                recs.push_back((*begin).value_list);
+                begin++;
             }
-        }
-
-        if (_rel == ">"){
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
-                if ((*iter).key > val){ 
-                    recs.push_back((*iter).value_list);
-                }
-                iter++;
+        } 
+        else if (_rel == ">"){
+            MMap<string,long>::Iterator begin = mmap.upper_bound(val);
+            MMap<string,long>::Iterator end = mmap.end();
+            while(begin != end){
+                recs.push_back((*begin).value_list);
+                begin++;
             }
-        }
-
-        if (_rel == ">="){
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
-                if ((*iter).key >= val){
-                    recs.push_back((*iter).value_list);
-                }
-                iter++;
+        } 
+        else if (_rel == ">=") {
+            MMap<string,long>::Iterator begin = mmap.lower_bound(val);
+            MMap<string,long>::Iterator end = mmap.end();
+            while (begin != end){
+                recs.push_back((*begin).value_list);
+                begin++;
             }
-        }
-
-        if (_rel == "<="){
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
-                if ((*iter).key <= val){
-                    recs.push_back((*iter).value_list);
-                }
-                iter++;
+        } 
+        else if (_rel == "<="){
+            MMap<string,long>::Iterator end = mmap.upper_bound(val);
+            MMap<string,long>::Iterator begin = mmap.begin();
+            while (begin != end){
+                recs.push_back((*begin).value_list);
+                begin++;
             }
         }
 
@@ -88,12 +75,12 @@ class Relational: public Operator{
                 result.push_back(temp[j]);
             }
         }
-        return result;        
+        return result;  
     }
+
     private:
         string _rel;
         vector<long> result;
-
 };
 
 #endif

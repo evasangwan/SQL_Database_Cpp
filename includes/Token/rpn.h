@@ -37,7 +37,8 @@ class RPN{
                 stack.push(temp);
             }
             if (type == RELATIONAL){
-                TToken* value = stack.pop();  
+                //cout << "STACK " << stack << endl;
+                TToken* value = stack.pop();
                 TToken* fieldname = stack.pop();
                 const string val = static_cast<TokenStr*>(value)->getStr();
                 const string field = static_cast<TokenStr*>(fieldname)->getStr();
@@ -46,6 +47,7 @@ class RPN{
                 Relational* rel = static_cast<Relational*>(temp);
                 long index = field_map[field];
                 vector<long> recs = rel->eval(mmap[index],val);
+                //cout << "recs in rpn " << endl << recs << endl << "recsssssssss"<<endl;
                 stack.push(new ResultSet(recs));
             }
             if (type == LOGICAL){
@@ -55,7 +57,7 @@ class RPN{
                 vector<long> two = static_cast<ResultSet*>(second)->getVector();
                 Logical* log = static_cast<Logical*>(temp);
                 vector<long> recs = log->eval(one,two);
-                // cout << "recs " << endl;
+                // cout << "recs logical " << endl;
                 // cout << recs << endl;
                 stack.push(new ResultSet(recs));
             }
@@ -63,6 +65,7 @@ class RPN{
         }
         TToken* res = stack.pop();
         vector<long> result = static_cast<ResultSet*>(res)->getVector();
+        // cout << "RESULTTTTTTTTTTTTTTTTT"<<endl << result << endl << "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"<<endl;
         return result;
     }
 

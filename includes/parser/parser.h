@@ -8,6 +8,7 @@
 #include <cassert>
 #include <ctype.h>
 #include <algorithm>
+#include <cstdlib> 
 #include "../tokenizer/ftokenize.h"
 #include "../tokenizer/state_machine_functions.h"
 #include "../bplustree/multimap.h"
@@ -44,113 +45,20 @@ class Parser{
         keywords.insert("from",FROM);
     }
     bool get_parse_tree(){
-        bool table_name = false;
-        bool values = false;
-        bool coll = false;
-        bool fields = false;
-        bool condition = false;
-        bool where = false;
-        bool fields_check = false;
-        bool values_check = false;
-        bool starcheck = false;
-        //cout << queue << endl;
-        string token = queue.pop();
-        int state = 0;
-        int col;
-        string keep = token;
-        for (int i = 0; i < token.size(); i++){
-            token[i] = tolower(token[i]);
-        }
-        //cout << "token before " << keep << " token after " << token << endl;
-        if (keywords.contains(token)){
-            col = keywords[token];
-        }
-        else{
-            col = keywords["symbol"];
-            token = keep;
-        }
-        state = table[state][col];
-        while (state != -1){
-            if (token == "make" || token == "insert" || token == "create"){
-                ptree["command"] += token;
-            }
-            else if (token == "table" || token == "into"){
-                table_name = true;
-                //do nothing
-            }
-            else if (token == "fields"){
-                //do nothing
-                coll = true;
-                fields_check = true;
-                values_check = true;
-                starcheck = true;
-            }
-            else if (token == "values"){
-                values = true;
-                fields_check = true;
-                values_check = true;
-                starcheck = true;
-            }
-            else if (token == "select"){
-                 ptree["command"] += token;
-                 fields = true; // *
-            }
-            else if (token == "from"){
-                table_name = true;
-                fields = false;
-                fields_check = true;
-                values_check = true;
-                starcheck = true;
-                //do nothing 
-            }
-            else if (token == "where"){
-                string s = "yes";
-                ptree["where"] += s;
-                condition = true;
-            }
-            else{
-                if (table_name){
-                    ptree["table_name"] += token;
-                    table_name = false;
-                }
-                else if (coll){
-                     ptree["col"] += token;
-                }
-                else if (fields){
-                    ptree["fields"] += token;
-                }
-                else if (condition){
-                    ptree["condition"] += token;
-                }
-                else if (values){
-                    ptree["values"] += token;
-                }
-            }
-            if(!queue.empty()){
-                token = queue.pop();
-            }
-            else{
-                if (fields_check && values_check && starcheck && table[state][0] == 1){
-                    return true;
-                }
-                else{
-                    ptree.clear();
-                    return false; 
-                }
-               
-            }
-            // //cout << "token " << token << endl;
-            // if (keywords.contains(token)){
-            //     col = keywords[token];
-            // }
-            // else{
-            //     col = keywords["symbol"];
-            // }
+        // try{
+            bool table_name = false;
+            bool values = false;
+            bool coll = false;
+            bool fields = false;
+            bool condition = false;
+            bool where = false;
+            string token = queue.pop();
+            int state = 0;
+            int col;
             string keep = token;
             for (int i = 0; i < token.size(); i++){
                 token[i] = tolower(token[i]);
             }
-            //cout << "token before " << keep << " token after " << token << endl;
             if (keywords.contains(token)){
                 col = keywords[token];
             }
@@ -159,126 +67,91 @@ class Parser{
                 token = keep;
             }
             state = table[state][col];
-        }
+            while (state != -1){
+                if (token == "make" || token == "insert" || token == "create"){
+                    ptree["command"] += token;
+                }
+                else if (token == "table" || token == "into"){
+                    table_name = true;
+                    //do nothing
+                }
+                else if (token == "fields"){
+                    //do nothing
+                    coll = true;
+                }
+                else if (token == "values"){
+                    values = true;
+                }
+                else if (token == "select"){
+                    ptree["command"] += token;
+                    fields = true; // *
+                }
+                else if (token == "from"){
+                    table_name = true;
+                    fields = false;
+                    //do nothing 
+                }
+                else if (token == "where"){
+                    string s = "yes";
+                    ptree["where"] += s;
+                    condition = true;
+                }
+                else{
+                    if (table_name){
+                        ptree["table_name"] += token;
+                        table_name = false;
+                    }
+                    else if (coll){
+                        ptree["col"] += token;
+                    }
+                    else if (fields){
+                        ptree["fields"] += token;
+                    }
+                    else if (condition){
+                        ptree["condition"] += token;
+                    }
+                    else if (values){
+                        ptree["values"] += token;
+                    }
+                    else{
+                        //cout << "token " << token << endl;
+                        ptree["garbage"] += token;
+                    }
+                }
+                if(!queue.empty()){
+                    token = queue.pop();
+                }
+                else{
+                    // cout << "but ti should go here " << endl; 
+                    // cout << ptree["garbage"][0] << endl;
+                    // cout << ptree["table_name"][0] << endl;
+                    if (validate()){
+                        //cout << "HERE" << endl;
+                        return true;
+                    }
+                    else{
+                        ptree.clear();
+                        throw(false);
+                    }
+                }
+                string keep = token;
+                for (int i = 0; i < token.size(); i++){
+                    token[i] = tolower(token[i]);
+                }
+                //cout << "token before " << keep << " token after " << token << endl;
+                if (keywords.contains(token)){
+                    col = keywords[token];
+                }
+                else{
+                    col = keywords["symbol"];
+                    token = keep;
+                }
+                state = table[state][col];
+            }
+        // }
         ptree.clear();
-        return false;
+        throw(false);
     }
-      // bool get_parse_tree(){
-    //     bool table_name = false;
-    //     bool values = false;
-    //     bool coll = false;
-    //     bool fields = false;
-    //     bool condition = false;
-    //     bool where = false;
-    //     //cout << queue << endl;
-    //     string token = queue.pop();
-    //     int state = 0;
-    //     int col;
-    //     if (keywords.contains(token)){
-    //         col = keywords[token];
-    //     }
-    //     else{
-    //         col = keywords["symbol"];
-    //     }
-    //     state = table[state][col];
-    //     while (state != -1){
-    //         if (token == "make" || token == "insert" || token == "create"){
-    //             ptree["command"] += token;
-    //         }
-    //         else if (token == "table" || token == "into"){
-    //             table_name = true;
-    //             //do nothing
-    //         }
-    //         else if (token == "fields"){
-    //             //do nothing
-    //             coll = true;
-    //         }
-    //         else if (token == "values"){
-    //             values = true;
-    //         }
-    //         else if (token == "select"){
-    //              ptree["command"] += token;
-    //              fields = true; // *
-    //         }
-    //         else if (token == "from"){
-    //             table_name = true;
-    //             fields = false;
-    //             //do nothing 
-    //         }
-    //         else if (token == "where"){
-    //             string s = "yes";
-    //             ptree["where"] += s;
-    //             condition = true;
-    //         }
-    //         else{
-    //             if (table_name){
-    //                 ptree["table_name"] += token;
-    //                 table_name = false;
-    //             }
-    //             else if (coll){
-    //                  ptree["col"] += token;
-    //             }
-    //             else if (fields){
-    //                 ptree["fields"] += token;
-    //             }
-    //             else if (condition){
-    //                 ptree["condition"] += token;
-    //             }
-    //             else if (values){
-    //                 ptree["values"] += token;
-    //             }
-    //         }
-    //         if(!queue.empty()){
-    //             token = queue.pop();
-    //         }
-    //         else{
-    //             return true;
-    //         }
-    //         //cout << "token " << token << endl;
-    //         if (keywords.contains(token)){
-    //             col = keywords[token];
-    //         }
-    //         else{
-    //             col = keywords["symbol"];
-    //         }
-    //         state = table[state][col];
-    //     }
-    //     MMap<string, string> reset;
-    //     ptree = reset;
-    //     return false;
-    // }
-   
-    // void set_string(char s[300]){
-    //     inputq.clear();
-    //     Queue<string> clear;
-    //     queue = clear;
-    //     MMap<string, string> reset;
-    //     ptree = reset;
-    //     cout << ptree << endl;
-    //     STokenizer stk(s);
-    //     Token t;
-    //     stk>>t;
-    //     //cout << "IN SET STRING"<<endl;
-    //     while(stk.more()){
-    //         cout<<setw(10)<<t.type_string()<<setw(10)<<t<<endl;
-    //         if (t.type_string() != "SPACE"){
-    //             inputq.push_back(t.token_str());
-    //         }
-    //         t = Token();
-    //         stk>>t;
-    //     }
-    //     // cout << "********************************************************************************"<<endl;
-    //     // cout << "********************************************************************************"<<endl;
-    //     // cout << inputq << endl;
-    //     // cout << "********************************************************************************"<<endl;
-    //     // cout << "********************************************************************************"<<endl;
-    //     fix_vect();
-    //     for (int i = 0; i < inputq.size(); i++){
-    //         queue.push(inputq[i]);
-    //     }
-    //     //cout << queue << endl;
-    //     // cout << inputq << endl;
-    // }    
 
     void set_string(char s[300]){
         inputq.clear();
@@ -314,30 +187,43 @@ class Parser{
             t = Token();
             stk>>t;
         }
-        // cout << "********************************************************************************"<<endl;
-        // cout << "********************************************************************************"<<endl;
-        // cout << inputq << endl;
-        // cout << "********************************************************************************"<<endl;
-        // cout << "********************************************************************************"<<endl;
-        //  for (int i = 0; i < inputq.size(); i++){
-        //     cout << "["<<inputq[i]<<"]"<<endl;
-        // }
-        // cout << "now calling fix vec"<<endl;
         fix_vect();
         for (int i = 0; i < inputq.size(); i++){
             queue.push(inputq[i]);
         }
-        //cout << queue << endl;
-        // cout << "********************************************************************************"<<endl;
-        // cout << "********************************here************************************************"<<endl;
-        // for (int i = 0; i < inputq.size(); i++){
-        //     cout << "["<<inputq[i]<<"]"<<endl;
-        // }
-        // cout << "********************************************************************************"<<endl;
-        // cout << "*******************************end*************************************************"<<endl;
-        
-    }    
+    }  
 
+    bool validate(){  //error handling 
+        //ptree.print_lookup();
+        // cout << "HERE " << endl;
+        if (ptree.contains("command") && ptree["command"][0] == "select"){
+            // cout << "in here" << endl;
+            // cout << ptree.contains("table_name") << endl; 
+            // cout << "checking if it crashed"<<endl;
+            if (ptree.contains("table_name") && ptree.contains("fields") &&!ptree["table_name"][0].empty() && ptree["fields"][0] == "*" || !ptree["fields"].empty()){
+                if (ptree.contains("where")){
+                    if (!ptree["condition"].empty() && ptree["garbage"].empty()){
+                        return true; 
+                    }
+                }
+                if (ptree["garbage"].empty()){
+                    return true; 
+                }
+            }
+        }
+        else if (ptree["command"][0] == "make" || ptree["command"][0] == "create"){
+            if (ptree.contains("table_name") && ptree.contains("col") && !ptree["table_name"][0].empty() && !ptree["col"].empty() && ptree["garbage"].empty()){
+                return true;
+            }
+        }
+        else if (ptree["command"][0] == "insert"){
+            if (ptree.contains("table_name") && ptree.contains("values") && !ptree["table_name"][0].empty() && !ptree["values"].empty() && ptree["garbage"].empty()){
+                return true;
+            }
+        }
+        // cout << "should come straight here" << endl;
+        return false;
+}
 
     void fix_vect(){
         vector<string> fixed;
@@ -347,30 +233,10 @@ class Parser{
         // cout << "Inputq"<<endl;
         // cout << inputq << endl;
         for (int i = 0; i < inputq.size(); i++){
-            // if (inputq[i] == "\""){
-            //     insidequotes = true;
-            //     count++;
-            //     if (count == 2){
-            //         combine.pop_back();  //getting rid of extra space
-            //         //cout << "combine " << "[" << combine << "]"<< endl;
-            //         fixed.push_back(combine);
-            //         insidequotes = false;
-            //         count = 0;
-            //         combine.clear();
-            //     }
-            // }
-            // else if (insidequotes && count < 2){
-            //     combine += inputq[i];
-            //     combine+=" ";
-            // }
-            // else{
-                if (inputq[i] != ","){
-                    fixed.push_back(inputq[i]);
-                }
-            // }
+            if (inputq[i] != ","){
+                fixed.push_back(inputq[i]);
+            }
         }
-        // cout << "fixed "<<endl;
-        // cout << fixed << endl;
         inputq = fixed;
     }
     void make_table(int table[][MAX_COLUMNS]){

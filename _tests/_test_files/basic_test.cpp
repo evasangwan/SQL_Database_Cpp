@@ -51,7 +51,6 @@ const vector<string> command_list = {
 "select * from student where age > 20 and (fname = Flo or fname = Alex )",
 // "select * from student where age < 50 and (fname = \"Teresa Mae\" or lname = Jackson)",
 "select * from student where age < 50 and (fname = \"Teresa Mae\" or lname = Jackson and (age > 10 and (major = CS or major = Math)))"
-
 };
 
 const int MAKE_TABLE_COMMANDS = 11;

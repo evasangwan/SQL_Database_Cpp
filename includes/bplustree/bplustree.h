@@ -299,6 +299,7 @@ public:
         }
         if (found && is_leaf()){
             BPlusTree<T>* ptr = this;
+            // cout << "ptr " << *ptr << endl;
             return Iterator(ptr,i);
         }
         else if (found && !is_leaf()){
@@ -311,18 +312,50 @@ public:
             return Iterator();
         }
     } //return an iterator to this key. NULL if not there.
+ 
 
     Iterator equal_range(T num) {
         return Iterator();
     }
 
     Iterator lower_bound(const T& key){
-        
-        return Iterator();
+        BPlusTree<T>* ptr = this;
+        while (ptr && !ptr->is_leaf()){
+            int i = first_ge(ptr->data, ptr->data_count, key);
+            ptr = ptr->subset[i];
+        }
+        int i = first_ge(ptr->data, ptr->data_count, key);
+        if (i < ptr->data_count && ptr->data[i] >= key){
+            return Iterator(ptr,i);
+        }
+        else{
+            if (ptr->next){
+                return Iterator(ptr->next,0);
+            }
+            else{
+                return Iterator();
+            }
+        }
     }  //return first that goes NOT BEFORE key entry or next if does not exist: >= entry
 
     Iterator upper_bound(const T& key){
-        return Iterator();
+        BPlusTree<T>*ptr = this;
+        while (ptr && !ptr->is_leaf()){
+            int i = first_ge(ptr->data,ptr->data_count, key);
+            ptr = ptr->subset[i];
+        }
+        int i = first_ge(ptr->data,ptr->data_count,key);
+        if (i < ptr->data_count && ptr->data[i] > key){
+            return Iterator(ptr,i);
+        }
+        else{
+            if (ptr->next){
+                return Iterator(ptr->next,0);
+            }
+            else{
+                return Iterator();
+            }
+        }
     }  //return first that goes AFTER key exist or not, the next entry  >entry
 
     int size() const{
