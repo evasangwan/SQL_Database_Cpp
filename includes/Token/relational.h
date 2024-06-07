@@ -29,6 +29,7 @@ class Relational: public Operator{
             return 3;
     }
     vector<long> eval(MMap<string, long>& mmap, const string& val){
+        result.clear();
         vector<vector<long>> recs;
         if (_rel == "="){
             // cout << "in = " << endl; 
@@ -52,6 +53,8 @@ class Relational: public Operator{
                 //cout << *begin << endl;
                 recs.push_back((*begin).value_list);
                 begin++;
+                // cout << *begin << endl;
+                // cout << *end << endl; 
             }
         } 
         else if (_rel == ">"){  

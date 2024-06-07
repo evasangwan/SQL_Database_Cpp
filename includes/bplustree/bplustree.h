@@ -325,7 +325,7 @@ public:
             ptr = ptr->subset[i];
         }
         int i = first_ge(ptr->data, ptr->data_count, key);
-        if (i < ptr->data_count && ptr->data[i] >= key ){   //!(ptr->data[i] < key)
+        if (i < ptr->data_count &&  ptr->data[i] >= key){   //!(ptr->data[i] < key) ptr->data[i] >= key 
             return Iterator(ptr,i);
         }
         else{
