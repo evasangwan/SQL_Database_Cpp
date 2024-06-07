@@ -52,7 +52,7 @@ class Relational: public Operator{
                 begin++;
             }
         } 
-        else if (_rel == ">=") {
+        else if (_rel == ">="){
             MMap<string,long>::Iterator begin = mmap.lower_bound(val);
             MMap<string,long>::Iterator end = mmap.end();
             while (begin != end){
