@@ -155,25 +155,25 @@
 //             }
 //         }
 
-//         if (_rel == ">"){
-//             MMap<string,long>::Iterator iter = mmap.begin();
-//             while (iter != mmap.end()){
-//                 if ((*iter).key > val){ 
-//                     recs.push_back((*iter).value_list);
-//                 }
-//                 iter++;
-//             }
-//         }
+        // if (_rel == ">"){
+        //     MMap<string,long>::Iterator iter = mmap.begin();
+        //     while (iter != mmap.end()){
+        //         if ((*iter).key > val){ 
+        //             recs.push_back((*iter).value_list);
+        //         }
+        //         iter++;
+        //     }
+        // }
 
-//         if (_rel == ">="){
-//             MMap<string,long>::Iterator iter = mmap.begin();
-//             while (iter != mmap.end()){
-//                 if ((*iter).key >= val){
-//                     recs.push_back((*iter).value_list);
-//                 }
-//                 iter++;
-//             }
-//         }
+        // if (_rel == ">="){
+        //     MMap<string,long>::Iterator iter = mmap.begin();
+        //     while (iter != mmap.end()){
+        //         if ((*iter).key >= val){
+        //             recs.push_back((*iter).value_list);
+        //         }
+        //         iter++;
+        //     }
+        // }
 
 //         if (_rel == "<="){
 //             MMap<string,long>::Iterator iter = mmap.begin();
@@ -258,8 +258,9 @@ class Relational: public Operator{
         }
 
         if (_rel == ">"){
-            MMap<string,long>::Iterator iter = mmap.begin();
-            while (iter != mmap.end()){
+            MMap<string,long>::Iterator iter = mmap.upper_bound(val);
+            MMap<string,long>::Iterator end = mmap.end();
+            while (iter != mmap.end()&& iter != end){
                 if ((*iter).key > val){ 
                     recs.push_back((*iter).value_list);
                 }
@@ -267,6 +268,16 @@ class Relational: public Operator{
             }
         }
 
+        // if (_rel == ">="){
+        //     MMap<string,long>::Iterator iter = mmap.lower_bound(val);
+        //     MMap<string,long>::Iterator end = mmap.end();
+        //     while (iter != mmap.end() && iter != end){
+        //         if ((*iter).key >= val){
+        //             recs.push_back((*iter).value_list);
+        //         }
+        //         iter++;
+        //     }
+        // }
         if (_rel == ">="){
             MMap<string,long>::Iterator iter = mmap.begin();
             while (iter != mmap.end()){
