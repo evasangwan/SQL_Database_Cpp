@@ -31,39 +31,52 @@ class Relational: public Operator{
     vector<long> eval(MMap<string, long>& mmap, const string& val){
         vector<vector<long>> recs;
         if (_rel == "="){
+            // cout << "in = " << endl; 
+            //cout << mmap << endl;
             MMap<string,long>::Iterator found = mmap.find(val);
-            if (found != mmap.end()){
+            //cout << *found << endl;
+            if (found != mmap.end() && (*found).key == val){
                 recs.push_back((*found).value_list);
             }
         } 
-        else if (_rel == "<"){
+        else if (_rel == "<"){  
+            // cout << "in < " << endl; 
+            // cout << "va " << val << endl; 
+            // cout << mmap << endl; 
             MMap<string,long>::Iterator end = mmap.lower_bound(val);
+            //cout << *end << endl;
             MMap<string,long>::Iterator begin = mmap.begin();
-            while (begin != end){
+            //cout << "------------------------"<<endl;
+            //cout << mmap << endl;
+            while (begin != mmap.end() && begin!=end && (*begin).key < val){
+                //cout << *begin << endl;
                 recs.push_back((*begin).value_list);
                 begin++;
             }
         } 
-        else if (_rel == ">"){
+        else if (_rel == ">"){  
+            // cout << "in > " << endl; 
             MMap<string,long>::Iterator begin = mmap.upper_bound(val);
             MMap<string,long>::Iterator end = mmap.end();
-            while(begin != end){
+            while(begin != end && (*begin).key > val){
                 recs.push_back((*begin).value_list);
                 begin++;
             }
         } 
         else if (_rel == ">="){
+            // cout << "in >= " << endl;
             MMap<string,long>::Iterator begin = mmap.lower_bound(val);
             MMap<string,long>::Iterator end = mmap.end();
-            while (begin != end){
+            while (begin != end && (*begin).key >= val){
                 recs.push_back((*begin).value_list);
                 begin++;
             }
         } 
-        else if (_rel == "<="){
+        else if (_rel == "<="){    
+            // cout << "<= " << endl; 
             MMap<string,long>::Iterator end = mmap.upper_bound(val);
             MMap<string,long>::Iterator begin = mmap.begin();
-            while (begin != end){
+            while (begin != mmap.end() && begin!= end && (*begin).key <= val){
                 recs.push_back((*begin).value_list);
                 begin++;
             }
