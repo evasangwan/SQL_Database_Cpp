@@ -21,15 +21,15 @@ class SQL{
         Parser p(s);
         p.set_string(s);
         ptree = p.parse_tree(); 
-        cout << "SHOULD COME HERE"<<endl;
+        //cout << "SHOULD COME HERE"<<endl;
         if (ptree.empty()){
-            cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
+            //cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeee"<<endl;
             recnos.clear();
             return Table();
         }
         // ptree.print_lookup();
         // cout << endl;
-        cout << "hey " << endl; 
+        // cout << "hey " << endl; 
         if (ptree["command"][0] == "select"){
             if (ptree["fields"][0] == "*"){
                 if (ptree.contains("where")){
@@ -173,7 +173,7 @@ class SQL{
         }
         else{
             if (ptree["command"][0] == "make" || ptree["command"][0] =="create"){
-                cout << "in here" << endl;
+                //cout << "in here" << endl;
                 string name = ptree["table_name"][0];
                 ofstream tablenames(table_names, ios::app);
                 if (tablenames.is_open()){
