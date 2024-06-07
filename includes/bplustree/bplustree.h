@@ -349,7 +349,11 @@ public:
             return Iterator(ptr,i);
         }
         else{
-            if (ptr->next){
+            i++;
+            if (i < ptr->data_count && ptr->data[i] > key){  
+                return Iterator(ptr,i);
+            }
+            else if (ptr->next){
                 return Iterator(ptr->next,0);
             }
             else{
