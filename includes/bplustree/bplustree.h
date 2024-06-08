@@ -322,7 +322,12 @@ public:
         BPlusTree<T>* ptr = this;
         while (ptr && !ptr->is_leaf()){
             int i = first_ge(ptr->data, ptr->data_count, key);
-            ptr = ptr->subset[i];
+            if (i < data_count && ptr->data[i] == key){
+                ptr = ptr->subset[i+1];
+            }
+            else{
+                ptr = ptr->subset[i];
+            }
         }
         int i = first_ge(ptr->data, ptr->data_count, key);
         if (i < ptr->data_count &&  ptr->data[i] >= key){   //!(ptr->data[i] < key) ptr->data[i] >= key 
