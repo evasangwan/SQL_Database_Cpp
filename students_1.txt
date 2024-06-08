@@ -1,3 +1,4 @@
-lname
 fname
+lname
 major
+age
