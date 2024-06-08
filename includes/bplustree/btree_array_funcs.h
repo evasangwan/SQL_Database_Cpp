@@ -45,7 +45,10 @@ int index_of_maximal(T data[ ], int n){
 template <class T>
 int first_ge(const T data[ ], int n, const T& entry){   //return the first element in data that is
     for (int i = 0; i < n; i++){
+        // cout << "[" << data[i] << "] ";
         if (data[i] >= entry){
+            // cout << "[" << data[i] << "] ";
+            // cout << "[" << data[i].key << "] ";
             return i;
         }
     }

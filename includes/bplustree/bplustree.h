@@ -322,7 +322,7 @@ public:
         BPlusTree<T>* ptr = this;
         while (ptr && !ptr->is_leaf()){
             int i = first_ge(ptr->data, ptr->data_count, key);
-            if (i < data_count && ptr->data[i] == key){
+            if (i < ptr->data_count && ptr->data[i] == key){
                 ptr = ptr->subset[i+1];
             }
             else{
@@ -344,11 +344,21 @@ public:
     }  //return first that goes NOT BEFORE key entry or next if does not exist: >= entry
 
     Iterator upper_bound(const T& key){
+        // cout << "???????????????"<<endl;
+        // print_tree();
+        // cout << "!!!!!!!!!!!!!!!!!!"<<endl;
         BPlusTree<T>*ptr = this;
+        for (int i = 0; i < ptr->data_count; i++){
+            cout << ptr->data[i] << endl;
+        }
         while (ptr && !ptr->is_leaf()){
             int i = first_ge(ptr->data,ptr->data_count, key);
-            if (i < data_count && ptr->data[i] == key){
+            for (int j = 0; j < ptr->data_count; j++){
+                cout << ptr->data[j] << endl;
+            }
+            if (i < ptr->data_count && ptr->data[i] == key){
                 ptr = ptr->subset[i+1];
+                // cout << "here " << endl;  
             }
             else{
                 ptr = ptr->subset[i];
