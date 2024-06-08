@@ -64,13 +64,27 @@ class Relational: public Operator{
             }
         }
 
+        // if (_rel == ">="){
+        //     cout << "in >= " << endl;
+        //     cout << mmap << endl; 
+        //     cout << "*****************"<<endl;
+        //     MMap<string,long>::Iterator iter = mmap.lower_bound(val);
+        //     MMap<string,long>::Iterator end = mmap.end();
+        //     while (iter != mmap.end() && iter != end){
+        //         cout << "*iter = " << *iter << endl; 
+        //         cout << "*end = " << *end << endl; 
+        //         // if ((*iter).key >= val){
+        //         recs.push_back((*iter).value_list);
+        //         // }
+        //         iter++;
+        //     }
+        // }
         if (_rel == ">="){
-            MMap<string,long>::Iterator iter = mmap.lower_bound(val);
-            MMap<string,long>::Iterator end = mmap.end();
-            while (iter != mmap.end() && iter != end){
-                // if ((*iter).key >= val){
-                recs.push_back((*iter).value_list);
-                // }
+            MMap<string,long>::Iterator iter = mmap.begin();
+            while (iter != mmap.end()){
+                if ((*iter).key >= val){
+                    recs.push_back((*iter).value_list);
+                }
                 iter++;
             }
         }

@@ -50,8 +50,17 @@ bool test_stub(bool debug = false)
       // "Select * From employee",
       // "select * from employee",
       // "SELECT fname FROM employee",
-      "select * from students where age <= 30", //failllllllllll
-      // "select * from students where age <= 17"
+      // "select * from students where age <= 30", //failllllllllll
+      "select * from students where age <= 18",
+      "select * from students where age >= 10",
+      "select * from students where age >= 12",
+      "select * from students where age <= 21",
+      "select * from students where age >= 30",
+      "select * from students where age <= 42",
+      "select * from students where age >= 19",
+      "select * from students where age >= 27",
+      "select * from students where age >= 38",
+      "select * from students where age >= 23"
       // "selECT lname, fname, major frOM students where (major = Mh and age < 25)",
       // "select * from students",
       // "select * from students where age > 19 and (lname = Jackson or major = Math and fname = \"Mary Ann\")",
