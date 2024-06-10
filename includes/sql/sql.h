@@ -50,7 +50,6 @@ class SQL{
                                     Table selected = tables[name].select_all_plus_condition(condition); //creates specific table
                                     recnos.clear();
                                     recnos = selected.select_recnos();  //gets the selected recnos
-                                    findtable.close();
                                     return selected;
                                 }
                             }
@@ -79,7 +78,6 @@ class SQL{
                                     tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
                                     recnos.clear();
                                     recnos = tables[name].select_recnos();  //gets the selected recnos
-                                    findtable.close();
                                     return tables[name];
                                 }
                             }
@@ -112,7 +110,6 @@ class SQL{
                                     Table selected = tables[name].select(ptree["fields"], condition);  //creates specific table
                                     recnos.clear();
                                     recnos = selected.select_recnos();  //gets the selected recnos
-                                    findtable.close();
                                     return selected;
                                 }
                             }
@@ -143,7 +140,6 @@ class SQL{
                                     Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]); //creates specific table
                                     recnos.clear();
                                     recnos = selected.select_recnos(); //gets the selected recnos
-                                    findtable.close();
                                     return selected;
                                 }
                             }
@@ -174,10 +170,11 @@ class SQL{
                         while (getline(findtable,str)){
                             if (str == name){  //if found in "tablenames.txt"
                                 found = true;
-                                Table t = Table(name);  //opens the existing table
+                                tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
                                 cout << "Table with name [" << name << "] already exists: " << endl;
-                                findtable.close();
-                                return t;
+                                recnos.clear();
+                                recnos = tables[name].select_recnos(); //gets the selected recnos
+                                return tables[name];;
                             }
                         }
                     }
@@ -205,7 +202,6 @@ class SQL{
                                 found = true;
                                 tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
                                 tables[name].insert_into(ptree["values"]);  //inserts values into that table
-                                findtable.close();
                                 return tables[name];
                             }
                         }
