@@ -47,124 +47,227 @@ class Parser{
         keywords.insert("from",FROM);
     }
 
-    bool get_parse_tree(){
-        bool table_name = false;
-        bool values = false;
-        bool coll = false;
-        bool fields = false;
-        bool condition = false;
-        bool where = false;
+    // bool get_parse_tree(){
+    //     bool table_name = false;
+    //     bool values = false;
+    //     bool coll = false;
+    //     bool fields = false;
+    //     bool condition = false;
+    //     bool where = false;
 
-        string token = queue.pop();
-        int state = 0;
-        int col;
-        string s = "yes";
-        string keep = token;
-        //converting popped token to lowercase
-        for (int i = 0; i < token.size(); i++){
-            token[i] = tolower(token[i]);
-        }
-        //seeing the col num for the specific token
-        if (keywords.contains(token)){
-            col = keywords[token];
-        } 
-        else{
-            col = keywords["symbol"];
-            token = keep;
-        }
-        //getting the state
-        state = table[state][col];
+    //     string token = queue.pop();
+    //     int state = 0;
+    //     int col;
+    //     string s = "yes";
+    //     string keep = token;
+    //     //converting popped token to lowercase
+    //     for (int i = 0; i < token.size(); i++){
+    //         token[i] = tolower(token[i]);
+    //     }
+    //     //seeing the col num for the specific token
+    //     if (keywords.contains(token)){
+    //         col = keywords[token];
+    //     } 
+    //     else{
+    //         col = keywords["symbol"];
+    //         token = keep;
+    //     }
+    //     //getting the state
+    //     state = table[state][col];
 
-        while (state != -1){
-            switch (state){
-                case MAKE:
-                case CREATE:
-                case INSERT:
-                    ptree["command"] += token;
-                    break;
+    //     while (state != -1){
+    //         switch (state){
+    //             case MAKE:
+    //             case CREATE:
+    //             case INSERT:
+    //                 ptree["command"] += token;
+    //                 break;
 
-                case TABLE:
-                case INTO:
-                    table_name = true;
-                    break;
+    //             case TABLE:
+    //             case INTO:
+    //                 table_name = true;
+    //                 break;
 
-                case FIELDS:
-                    coll = true;
-                    break;
+    //             case FIELDS:
+    //                 coll = true;
+    //                 break;
 
-                case VALUES:
-                    values = true;
-                    break;
+    //             case VALUES:
+    //                 values = true;
+    //                 break;
 
-                case SELECT:
-                    ptree["command"] += token;
-                    fields = true; 
-                    break;
+    //             case SELECT:
+    //                 ptree["command"] += token;
+    //                 fields = true; 
+    //                 break;
 
-                case FROM:
-                    table_name = true;
-                    fields = false;
-                    break;
+    //             case FROM:
+    //                 table_name = true;
+    //                 fields = false;
+    //                 break;
 
-                case WHERE:
-                    ptree["where"] += s;
-                    condition = true;
-                    break;
+    //             case WHERE:
+    //                 ptree["where"] += s;
+    //                 condition = true;
+    //                 break;
 
-                default:
-                    if (table_name){
-                        ptree["table_name"] += token;
-                        table_name = false;
-                    } 
-                    else if (coll){
-                        ptree["col"] += token;
-                    } 
-                    else if (fields){
-                        ptree["fields"] += token;
-                    } 
-                    else if (condition){
-                        ptree["condition"] += token;
-                    } 
-                    else if (values){
-                        ptree["values"] += token;
-                    } 
-                    else{
-                        ptree["garbage"] += token;  //for excess input (error handling)
-                    }
-                    break;
-            }
-            //if queue isn't empty, pop the next token
-            if (!queue.empty()){
-                token = queue.pop();
-            } 
-            else{  //when/if it's empty, validate if the ptree commands are valid
-                if (validate()){
-                    return true;
-                } 
-                else{
-                    ptree.clear();
-                    throw false;  //if not valid throw exception
-                }
-            }
-            keep = token;
-            //converting popped token to lowercase
+    //             default:
+    //                 if (table_name){
+    //                     ptree["table_name"] += token;
+    //                     table_name = false;
+    //                 } 
+    //                 else if (coll){
+    //                     ptree["col"] += token;
+    //                 } 
+    //                 else if (fields){
+    //                     ptree["fields"] += token;
+    //                 } 
+    //                 else if (condition){
+    //                     ptree["condition"] += token;
+    //                 } 
+    //                 else if (values){
+    //                     ptree["values"] += token;
+    //                 } 
+    //                 else{
+    //                     ptree["garbage"] += token;  //for excess input (error handling)
+    //                 }
+    //                 break;
+    //         }
+    //         //if queue isn't empty, pop the next token
+    //         if (!queue.empty()){
+    //             token = queue.pop();
+    //         } 
+    //         else{  //when/if it's empty, validate if the ptree commands are valid
+    //             if (validate()){
+    //                 return true;
+    //             } 
+    //             else{
+    //                 ptree.clear();
+    //                 throw false;  //if not valid throw exception
+    //             }
+    //         }
+    //         keep = token;
+    //         //converting popped token to lowercase
+    //         for (int i = 0; i < token.size(); i++){
+    //             token[i] = tolower(token[i]);
+    //         }
+    //         //seeing the col num for the specific token
+    //         if (keywords.contains(token)){
+    //             col = keywords[token];
+    //         } 
+    //         else{
+    //             col = keywords["symbol"];
+    //             token = keep;
+    //         }
+    //         //getting the next state
+    //         state = table[state][col];
+    //     }
+    //     //if it leaves while loop (fail state)...
+    //     ptree.clear();
+    //     throw false;
+    // }
+        bool get_parse_tree(){
+        // try{
+            bool table_name = false;
+            bool values = false;
+            bool coll = false;
+            bool fields = false;
+            bool condition = false;
+            bool where = false;
+            string token = queue.pop();
+            int state = 0;
+            int col;
+            string keep = token;
             for (int i = 0; i < token.size(); i++){
                 token[i] = tolower(token[i]);
             }
-            //seeing the col num for the specific token
+            //cout << "token before " << keep << " token after " << token << endl;
             if (keywords.contains(token)){
                 col = keywords[token];
-            } 
+            }
             else{
                 col = keywords["symbol"];
                 token = keep;
             }
-            //getting the next state
             state = table[state][col];
-        }
-        //if it leaves while loop (fail state)...
+            while (state != -1){
+                if (token == "make" || token == "insert" || token == "create"){
+                    ptree["command"] += token;
+                }
+                else if (token == "table" || token == "into"){
+                    table_name = true;
+                    //do nothing
+                }
+                else if (token == "fields"){
+                    //do nothing
+                    coll = true;
+                }
+                else if (token == "values"){
+                    values = true;
+                }
+                else if (token == "select"){
+                    ptree["command"] += token;
+                    fields = true; // *
+                }
+                else if (token == "from"){
+                    table_name = true;
+                    fields = false;
+                    //do nothing 
+                }
+                else if (token == "where"){
+                    string s = "yes";
+                    ptree["where"] += s;
+                    condition = true;
+                }
+                else{
+                    if (table_name){
+                        ptree["table_name"] += token;
+                        table_name = false;
+                    }
+                    else if (coll){
+                        ptree["col"] += token;
+                    }
+                    else if (fields){
+                        ptree["fields"] += token;
+                    }
+                    else if (condition){
+                        ptree["condition"] += token;
+                    }
+                    else if (values){
+                        ptree["values"] += token;
+                    }
+                    else{
+                        //cout << "token " << token << endl;
+                        ptree["garbage"] += token;
+                    }
+                }
+                if(!queue.empty()){
+                    token = queue.pop();
+                }
+                else{
+                    if (validate()){
+                        return true;
+                    }
+                    else{
+                        ptree.clear();
+                        throw(false);
+                    }
+                }
+                string keep = token;
+                for (int i = 0; i < token.size(); i++){
+                    token[i] = tolower(token[i]);
+                }
+                if (keywords.contains(token)){
+                    col = keywords[token];
+                }
+                else{
+                    col = keywords["symbol"];
+                    token = keep;
+                }
+                state = table[state][col];
+            }
         ptree.clear();
-        throw false;
+        throw(false);
     }
 
     void set_string(char s[300]){
