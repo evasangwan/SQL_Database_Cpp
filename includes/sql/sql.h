@@ -168,12 +168,11 @@ class SQL{
                     bool found = false;
                     if (findtable.is_open()){
                         while (getline(findtable,str)){
-                            if (str == name){  //if found in "tablenames.txt"
+                             if (str == name){
                                 found = true;
-                                tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
-                                cout << "Table with name [" << name << "] already exists: " << endl;
+                                tables[name] = Table(name, ptree["col"]);
                                 recnos.clear();
-                                recnos = tables[name].select_recnos(); //gets the selected recnos
+                                recnos = tables[name].select_recnos();
                                 return tables[name];;
                             }
                         }
