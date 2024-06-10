@@ -1,4 +1,4 @@
-fname
-lname
-major
-age
+stuff
+and
+other
+stuff

@@ -194,6 +194,24 @@ for (int i = 0; i < commandlines.size(); i++){
 }
 
 bool test_interactive(bool debug = false){
+  // cout << "interactive test " << endl;
+  // string input; 
+  // cout << "write command: ";
+  // getline(cin,input);
+  // SQL sql;
+  // Table t;
+  // while (input != "quit"){
+  //   try{
+  //     t = sql.command(input);
+  //     cout << t << endl;
+  //   } 
+  //   catch (bool valid){
+  //     cout << "Invalid command. Try again: " << endl; 
+  //   }
+  //   cout << "write command: ";
+  //   getline(cin,input);
+  // }
+  // cout << "ended test !" << endl;
   cout << "interactive test " << endl;
   string input; 
   cout << "write command: ";
@@ -201,34 +219,31 @@ bool test_interactive(bool debug = false){
   SQL sql;
   Table t;
   while (input != "quit"){
-    try{
       t = sql.command(input);
-      cout << t << endl;
-    } 
-    catch (bool valid){
-      cout << "Invalid command. Try again: " << endl; 
-    }
-    cout << "write command: ";
-    getline(cin,input);
+      if (!sql.is_error()){
+         cout << t << endl;
+      }
+      cout << "write command: ";
+      getline(cin,input);
   }
   cout << "ended test !" << endl;
 
   return true; 
 }
 
-TEST(TEST_STUB, TestStub) {
-  
-  //EXPECT_EQ(0, <your individual test functions are called here>);
-
-  EXPECT_EQ(1, test_stub(false));
-}
-
-// TEST(TEST_INTERACTIVE, TestInteractive) {
+// TEST(TEST_STUB, TestStub) {
   
 //   //EXPECT_EQ(0, <your individual test functions are called here>);
 
-//   EXPECT_EQ(1, test_interactive(false));
+//   EXPECT_EQ(1, test_stub(false));
 // }
+
+TEST(TEST_INTERACTIVE, TestInteractive) {
+  
+  //EXPECT_EQ(0, <your individual test functions are called here>);
+
+  EXPECT_EQ(1, test_interactive(false));
+}
 
 
 
