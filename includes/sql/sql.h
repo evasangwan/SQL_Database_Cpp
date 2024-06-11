@@ -282,7 +282,7 @@ class SQL{
             recnos.clear();
             return Table();
         }
-        // ptree.print_lookup();
+        ptree.print_lookup();
         // cout << endl;
         // cout << "hey " << endl; 
         if (ptree["command"][0] == "select"){

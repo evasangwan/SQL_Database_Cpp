@@ -55,8 +55,14 @@ class Parser{
         bool fields = false;
         bool condition = false;
         bool where = false;
-
-        string token = queue.pop();
+        string token;
+        if (!queue.empty()){
+           token = queue.pop();
+        }
+        else{
+            ptree.clear();
+            return false;
+        }
         int state = 0;
         int col;
         string s = "yes";
@@ -77,7 +83,7 @@ class Parser{
         state = table[state][col];
 
         while (state != -1){
-            switch (state){
+            switch (col){
                 case MAKE:
                 case CREATE:
                 case INSERT:
@@ -174,19 +180,19 @@ class Parser{
 
     void set_string(char s[300]){
         //clearing queue and ptree
+        inputq.clear();
+        ptree.clear();
         Queue<string> clear;
         queue = clear;
-        ptree.clear();
-
-        vector<string> inputq;
-        STokenizer stk(s);
-        Token t;
-        stk>>t;
         
         //for " " (quotes)
         bool insidequotes = false;
         string inside;
         int count = 0;
+
+        STokenizer stk(s);
+        Token t;
+        stk>>t;
 
         while(stk.more()){
             //cout<<setw(10)<<t.type_string()<<setw(10)<<t<<endl;
@@ -209,28 +215,28 @@ class Parser{
             t = Token();
             stk>>t;
         }
-        fix_vect(inputq); //gets rid of commas
+        fix_vect(); //gets rid of commas
         //pushing everything from that vector into the queue
         for (int i = 0; i < inputq.size(); i++){
             queue.push(inputq[i]);    
         }
     }  
 
-    void fix_vect(vector<string> input){ //gets rid of commas 
+    void fix_vect(){ //gets rid of commas 
         vector<string> fixed;
-        for (int i = 0; i < input.size(); i++){
-            if (input[i] != ","){
-                fixed.push_back(input[i]);
+        for (int i = 0; i < inputq.size(); i++){
+            if (inputq[i] != ","){
+                fixed.push_back(inputq[i]);
             }
         }
-        input = fixed;
+        inputq = fixed;
     }
 
     bool validate(){  //error handling 
         if (ptree.contains("command") && ptree["command"][0] == "select"){
             if (ptree.contains("table_name") && ptree.contains("fields") && !ptree["table_name"][0].empty() && (ptree["fields"][0] == "*" || !ptree["fields"].empty())){
                 if (ptree.contains("where")){
-                    if (!ptree["condition"].empty() && ptree["garbage"].empty()){
+                    if (ptree.contains("condition") && !ptree["condition"].empty() && ptree["garbage"].empty()){
                         return true; 
                     }
                 }
@@ -241,12 +247,12 @@ class Parser{
                 }
             }
         }
-        else if (ptree["command"][0] == "make" || ptree["command"][0] == "create"){
+        else if (ptree.contains("command") && ptree["command"][0] == "make" || ptree["command"][0] == "create"){
             if (ptree.contains("table_name") && ptree.contains("col") && !ptree["table_name"][0].empty() && !ptree["col"].empty() && ptree["garbage"].empty()){
                 return true;
             }
         }
-        else if (ptree["command"][0] == "insert"){
+        else if (ptree.contains("command") && ptree["command"][0] == "insert"){
             if (ptree.contains("table_name") && ptree.contains("values") && !ptree["table_name"][0].empty() && !ptree["values"].empty() && ptree["garbage"].empty()){
                 return true;
             }
@@ -296,6 +302,7 @@ class Parser{
     }
 
     private:
+    vector<string> inputq;
     Queue<string> queue;
     Map<string,int> keywords;
     MMap<string, string> ptree;
