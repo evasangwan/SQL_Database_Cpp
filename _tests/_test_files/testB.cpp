@@ -220,9 +220,9 @@ bool test_interactive(bool debug = false){
   Table t;
   while (input != "quit"){
       t = sql.command(input);
-      // if (!sql.is_error()){
+      if (!sql.is_error()){
          cout << t << endl;
-      // }
+      }
       cout << "write command: ";
       getline(cin,input);
   }
