@@ -27,10 +27,15 @@ class SQL{
             p.set_string(s);
             ptree = p.parse_tree(); 
         }
-        catch(bool valid){
+        // catch(bool valid){
+        //     sqlerror_flag = true;
+        //     cout << "Invalid command. Try again: " << endl; 
+        //     return Table();   
+        // }
+        catch(const invalidcommand& e){
             sqlerror_flag = true;
-            cout << "Invalid command. Try again: " << endl; 
-            return Table();   
+            cerr << "Error: " << e.what() << endl;
+            return Table();
         }
         //if it's valid... 
         if (ptree["command"][0] == "select"){
@@ -175,7 +180,9 @@ class SQL{
                              if (str == name){
                                 found = true;
                                 // tables[name] = Table(name, ptree["col"]);
-                                tables[name] = Table(name);
+                                if (tables.find(name) == tables.end()){  //if table not found in Map 
+                                    tables[name] = Table(name);
+                                }
                                 cout << "Table [" << name << "] already exists: " << endl;
                                 recnos.clear();
                                 recnos = tables[name].select_recnos();

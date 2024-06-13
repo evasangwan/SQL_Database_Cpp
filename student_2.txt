@@ -1,3 +1,2 @@
 fname
-lname
 age
