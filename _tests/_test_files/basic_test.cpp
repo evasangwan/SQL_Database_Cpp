@@ -455,8 +455,8 @@ const vector<string> command_list = {
 /*10*/     "insert into student values \"Mary Ann\",   Davis,	Math,	30",
 
 /*11*/     "select * from employee",
-/*12*/     "select last, first, age from employee",
-/*13*/     "select last from employee",
+// /*12*/     "select last, first, age from employee",
+// /*13*/     "select last from employee",
 /*14*/     "select * from employee where last = Johnson",
 /*15*/     "select * from employee where last=Blow and major=\"JoAnn\"",
 
@@ -478,15 +478,15 @@ bool sql_basic(bool debug = false)
      sql.command(command_list[0]);
      cout << "basic_test: table created." << endl<<endl;
 
-     for (int i = 0; i < MAKE_TABLE_COMMANDS; i++)
-     {
-          cout << ">" << command_list[i] << endl;
-          sql.command(command_list[i]);
-     }
+     // for (int i = 0; i < MAKE_TABLE_COMMANDS; i++)
+     // {
+     //      cout << ">" << command_list[i] << endl;
+     //      sql.command(command_list[i]);
+     // }
 
      cout << endl
           << endl;
-     for (int i = MAKE_TABLE_COMMANDS; i < command_list.size(); i++)
+     for (int i = 0; i < command_list.size(); i++)
      {
           cout << "\n>" << command_list[i] << endl;
           if (debug)

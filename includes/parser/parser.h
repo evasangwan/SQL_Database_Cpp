@@ -192,7 +192,7 @@ class Parser{
                 //cleanup gets rid of commas once input is valid
                 cleanup("fields");
                 cleanup("values");
-                cleanup("cols");
+                cleanup("col");
                 // if (validate()){
                 //     return true;
                 // } 
@@ -220,6 +220,9 @@ class Parser{
             state = table[state][col];
         }
         //if it leaves while loop (fail state)...
+        cleanup("fields");
+        cleanup("values");
+        cleanup("col");
         return validate();
     }
 

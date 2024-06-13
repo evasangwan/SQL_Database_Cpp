@@ -191,6 +191,7 @@ class SQL{
                 }
                 tablenames.close();
                 //after appending it to "tablenames.txt"
+                cout << ptree["col"] << endl; 
                 tables[name] = Table(name, ptree["col"]);  //creates the table and inserts that into the tables Map
                 recnos.clear();
                 recnos = tables[name].select_recnos();  //gets the selected recnos
