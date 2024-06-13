@@ -218,11 +218,21 @@ bool test_interactive(bool debug = false){
   getline(cin,input);
   SQL sql;
   Table t;
+  // int i = 0;
+  // vector<string> input = {
+  //   // "select * from student where age > 11", 
+  // // "select from student where age > 11",
+  // "select * from  where"
+  
+  // };
   while (input != "quit"){
+  //  while (i < input.size()){
+    // cout << input[i] << endl; 
       t = sql.command(input);
       if (!sql.is_error()){
          cout << t << endl;
       }
+      // i++;
       cout << "write command: ";
       getline(cin,input);
   }

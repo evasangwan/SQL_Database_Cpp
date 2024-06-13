@@ -27,9 +27,9 @@ class SQL{
             p.set_string(s);
             ptree = p.parse_tree(); 
         }
-        catch(bool valid){
+        catch(const invalid_argument e){
             sqlerror_flag = true;
-            cout << "Invalid command. Try again: " << endl; 
+            cerr << e.what() << endl; 
             return Table();
         }
         //if it's valid... 

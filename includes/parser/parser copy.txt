@@ -124,12 +124,9 @@ class Parser{
                     break;
 
                 case TABLE:
-                    ptree["table"] += s;
-                    table_name = true;
+                
                     break;
-
                 case INTO:
-                    ptree["into"] += s;
                     table_name = true;
                     break;
 
@@ -148,7 +145,6 @@ class Parser{
 
                 case FROM:
                     // validate_is_there("fields","Expected: field name(s)");
-                    ptree["from"] += s;
                     table_name = true;
                     fields = false;
                     break;
@@ -193,15 +189,14 @@ class Parser{
                 cleanup("fields");
                 cleanup("values");
                 cleanup("cols");
-                // if (validate()){
-                //     return true;
-                // } 
-                // else{
-                //     ptree.clear();
-                //     throw false;  //if not valid throw exception
-                //     // throw runtime_error("invalid");
-                // }
-                return validate();
+                if (validate()){
+                    return true;
+                } 
+                else{
+                    ptree.clear();
+                    throw false;  //if not valid throw exception
+                    // throw runtime_error("invalid");
+                }
             }
             keep = token;
             //converting popped token to lowercase
@@ -220,7 +215,12 @@ class Parser{
             state = table[state][col];
         }
         //if it leaves while loop (fail state)...
-        return validate();
+        if (validate()){
+            return true;
+        }
+        else{
+            throw invalid_argument("INVALD");
+        }
     }
 
     void set_string(char s[300]){
@@ -320,7 +320,7 @@ class Parser{
                                 }
                                 else{
                                     ptree.clear();
-                                    throw invalid_argument("Expected: condition");
+                                    throw invalidcommand("Expected: condition");
                                 }
                             }
                             else{   //doesnt contain where and condition
@@ -331,24 +331,24 @@ class Parser{
                                 }
                                 else{
                                     ptree.clear();
-                                    throw invalid_argument("Expected: where");
+                                    throw invalidcommand("Expected: where");
                                 }
                             }
                         }
                     }
                     else{
                         ptree.clear();
-                        throw invalid_argument("Expected: table name");
+                        throw invalidcommand("Expected: table name");
                     }
                 }
                 else{
                     ptree.clear();
-                    throw invalid_argument("Expected: from");
+                    throw invalidcommand("Expected: from");
                 }
             }
             else{
                 ptree.clear();
-                throw invalid_argument("Expected: field name");
+                throw invalidcommand("Expected: field name");
             }
         }
         else if (ptree.contains("command") && ptree["command"][0] == "make" || ptree["command"][0] == "create"){
@@ -361,17 +361,17 @@ class Parser{
                     }
                     else{
                         ptree.clear();
-                        throw invalid_argument("Expected: fields");
+                        throw invalidcommand("Expected: fields");
                     }
                 }
                 else{
                     ptree.clear();
-                    throw invalid_argument("Expected: table name");
+                    throw invalidcommand("Expected: table name");
                 }
             }
             else{
                 ptree.clear();
-                throw invalid_argument("Expected: table");
+                throw invalidcommand("Expected: table");
             }
         }
         else if (ptree.contains("command") && ptree["command"][0] == "insert"){
@@ -384,21 +384,21 @@ class Parser{
                     }
                     else{
                         ptree.clear();
-                        throw invalid_argument("Expected: values");
+                        throw invalidcommand("Expected: values");
                     }
                 }
                 else{
                     ptree.clear();
-                    throw invalid_argument("Expected: table name");
+                    throw invalidcommand("Expected: table name");
                 }
             }
             else{
                 ptree.clear();
-                throw invalid_argument("Expected: into");
+                throw invalidcommand("Expected: into");
             }
         }
         ptree.clear();
-        throw invalid_argument("Invalid command");
+        throw invalidcommand("Invalid command");
     } 
 
 
