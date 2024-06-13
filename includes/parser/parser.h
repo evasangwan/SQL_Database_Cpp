@@ -405,8 +405,6 @@ class Parser{
     } 
 
 
-
-
     void make_table(int table[][MAX_COLUMNS]){
         init_table(table);
         for (int i = 0; i < 20; i++){

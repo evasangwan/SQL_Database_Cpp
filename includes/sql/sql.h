@@ -33,6 +33,7 @@ class SQL{
             return Table();
         }
         //if it's valid... 
+        try{
         if (ptree["command"][0] == "select"){
             if (ptree["fields"][0] == "*"){ //select all
                 if (ptree.contains("where")){   //select all + condition
@@ -224,6 +225,12 @@ class SQL{
                 tables[name].insert_into(ptree["values"]); //inserts that into the table
                 return tables[name];
             }
+        }
+        }
+        catch(const invalid_argument e){
+            sqlerror_flag = true;
+            cerr << e.what() << endl; 
+            return Table();
         }
     }
 
