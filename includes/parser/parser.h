@@ -121,7 +121,7 @@ class Parser{
         //getting the state
         state = table[state][col];
 
-        while (state != -1){
+        while (state != -1){ 
             switch (col){
                 case MAKE:
                 case CREATE:
@@ -157,7 +157,7 @@ class Parser{
                     table_name = true;
                     fields = false;
                     break;
-
+                
                 case WHERE:
                     ptree["where"] += s;
                     condition = true;
@@ -216,10 +216,12 @@ class Parser{
             state = table[state][col];
         }
         //if it leaves while loop (fail state)...
-        cleanup("fields");
-        cleanup("values");
-        cleanup("col");
-        return validate();
+        if (state = -1){
+            cleanup("fields");
+            cleanup("values");
+            cleanup("col");
+            return validate();
+        }
     }
 
     void set_string(char s[300]){
