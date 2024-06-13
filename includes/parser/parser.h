@@ -49,13 +49,19 @@ class Parser{
     }
 
     void validate_comma(string token, string name, string msg){
+        int size = ptree[name].size();
         if (token == ","){
-            int size = ptree[name].size();
             if (size > 0 && ptree[name][size-1] == ","){
                 ptree.clear();
                 throw invalid_argument(msg);
             }
         }
+        // else{
+        //     if (size > 0 && ptree[name][size-1] != ","){
+        //         ptree.clear();
+        //         throw invalid_argument("Missing comma");
+        //     }
+        // }
     }
 
     //("fields")
@@ -318,8 +324,14 @@ class Parser{
                     if (ptree.contains("table_name")){
                         if (!ptree["table_name"][0].empty() && (ptree["fields"][0] == "*" || !ptree["fields"].empty())){
                             if (ptree.contains("where")){
-                                if (ptree.contains("condition") && !ptree["condition"].empty() && ptree["garbage"].empty()){
-                                    return true; 
+                                if (ptree.contains("condition") && !ptree["condition"].empty()){
+                                    if (ptree["garbage"].empty()){
+                                        return true; 
+                                    }
+                                    else{
+                                        ptree.clear();
+                                        throw invalid_argument("Excess input");
+                                    }
                                 }
                                 else{
                                     ptree.clear();
@@ -330,6 +342,10 @@ class Parser{
                                 if (!ptree.contains("condition")){
                                     if (ptree["garbage"].empty()){
                                         return true; 
+                                    }
+                                    else{
+                                        ptree.clear();
+                                        throw invalid_argument("Excess input");
                                     }
                                 }
                                 else{

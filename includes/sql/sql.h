@@ -19,6 +19,17 @@ class SQL{
     bool is_error(){   //returns if it's in error or not
         return sqlerror_flag; 
     }
+
+    void batch(vector<string> commands){
+        Table t;
+        for (int i = 0; i < commands.size(); i++){
+            cout << "[" << i << "]" << endl;
+            cout << commands[i] << endl;
+            t = command(commands[i]);
+            cout << t << endl;
+        }
+    }
+
     Table command(const string &input){
         try{
             sqlerror_flag = false;
