@@ -87,10 +87,7 @@ class SQL{
                             }
                             findtable.close();
                             if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
-                                if (!sqlerror_flag){
-                                    cout << "Table doesn't exist [can't select from it]" << endl;
-                                }
-                                sqlerror_flag = true;
+                                recnos.clear();
                                 return Table();
                             }
                         }
@@ -119,12 +116,9 @@ class SQL{
                             }
                             findtable.close();
                             if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
-                               if (!sqlerror_flag){
-                                    cout << "Table doesn't exist [can't select from it]" << endl;
-                                }
+                                recnos.clear();
+                                return Table();
                             }
-                            sqlerror_flag = true;
-                            return Table();
                         }
                         //else if it was found in the tables Map
                         recnos.clear();
@@ -155,10 +149,7 @@ class SQL{
                             }
                             findtable.close();
                             if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
-                                if (!sqlerror_flag){
-                                    cout << "Table doesn't exist [can't select from it]" << endl;
-                                }
-                                sqlerror_flag = true;
+                                recnos.clear();
                                 return Table();
                             }
                         }
@@ -189,10 +180,7 @@ class SQL{
                             }
                             findtable.close();
                             if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
-                                if (!sqlerror_flag){
-                                    cout << "Table doesn't exist [can't select from it]" << endl;
-                                }
-                                sqlerror_flag = true;
+                                recnos.clear();
                                 return Table();
                             }
                         }
