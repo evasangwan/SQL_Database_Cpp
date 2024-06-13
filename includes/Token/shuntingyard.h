@@ -26,6 +26,7 @@ using namespace std;
 class ShuntingYard{
     public:
     ShuntingYard(vector<string> &input):_input(input){
+        // cout << input << endl; 
        for (int i = 0; i < _input.size(); i++){
             if (_input[i] == "("){
                 _postfix.push(new LParen());
