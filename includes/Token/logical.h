@@ -36,7 +36,7 @@ class Logical: public Operator{
             return -99;
     }
     vector<long> eval(vector<long>& _one, vector<long>& _two){
-        if (_log == "and"){
+        if (_log == "and"){  //intersection
             vector<long> res;
             vector<long> one;
             vector<long> two;
@@ -55,14 +55,12 @@ class Logical: public Operator{
                         res.push_back(one[i]);
                         m++;
                     }
-                    // cout << "RECS "<<endl;
-                    // cout << res << endl;
                 }
             }
             result = res;
         }
 
-        if (_log == "or"){
+        if (_log == "or"){  //unioning
             vector<long> res;
             vector<long> one;
             vector<long> two;
@@ -74,10 +72,6 @@ class Logical: public Operator{
                 one = _two;
                 two = _one;
             }
-            // cout << "one " << endl;
-            // cout << one << endl;
-            // cout << "two " << endl;
-            // cout << two << endl;
             for (int i = 0; i < two.size(); i++){
                 vector<long>::iterator t = find(res.begin(),res.end(),two[i]);
                 if (t == res.end()){

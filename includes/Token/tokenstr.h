@@ -28,10 +28,6 @@ class TokenStr: public TToken{
             return -99;
         }
         
-        // friend ostream& operator<<(ostream& outs, const TokenStr& token){
-        //     return token.print(outs);
-        // }
-
     private:
         string t;
 };

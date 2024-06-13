@@ -193,90 +193,58 @@ for (int i = 0; i < commandlines.size(); i++){
   return true;
 }
 
+//incase i need to make the tables again
+    // vector<string> commands = {
+    //     "make table employee fields last, first, dep, salary, year",
+    //     "insert into employee values Blow, Joe, CS, 100000, 2018",
+    //     "insert into employee values Blow, JoAnn, Physics, 200000, 2016",
+    //     "insert into employee values Johnson, Jack, HR, 150000, 2014",
+    //     "insert into employee values Johnson, \"Jimmy\", Chemistry, 140000, 2018",
+    
+    //     "make table student fields fname, lname, major, age, company",
+    //     "insert into student values Flo, Yao, CS, 20, Google",
+    //     "insert into student values Bo, Yang, CS, 28, Microsoft",
+    //     "insert into student values \"Sammuel L.\", Jackson, CS, 40, Uber",
+    //     "insert into student values \"Flo\", \"Jackson\", Math, 21, Google",
+    //     "insert into student values \"Greg\", \"Pearson\", Physics, 20, Amazon"
+    // };
+
 bool test_interactive(bool debug = false){
-  cout << "interactive test " << endl;
-vector<string> command = {
+  vector<string> command ={
     "select lname, fname, major from student where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
     "select lname fname, major from student where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
     "select lname, , major from student where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
     "select lname, fname, major student where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
     "select lname, fname, major from where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
     "select lname, fname, major from student where",
-    
     "select lname, fname, major from student where (lname=Yang or major=CS) and age<23) or lname=Jackson",
-
-    // "select * from student where (lname = Yang or fname = Jacob)"
-    
     "select lname, fname, major from student where ((lname=Yang or major=CS and age<23) or lname=Jackson",
-    
-    // 9. Missing field in condition:
     "select lname, fname, major from student where ((lname= or major=CS) and age<23) or lname=Jackson",
-    
     "select lname, fname, major from student where ((lname=Yang or major=CS) and age<23) or lname=Jackson",
-    
-    // 11. Missing operator in condition:
     "select lname, fname, major from student where ((lname=Yang major=CS) and age<23) or lname=Jackson",
-    
-    // 12. Missing field in condition:
     "select lname, fname, major from student where ((lname=Yang or) and age<23) or lname=Jackson",
-    
-    // 13. Missing condition after 'or':
     "select lname, fname, major from student where ((lname=Yang or major=CS) and age<23) or",
-    
-    // 14. Valid command:
     "select lname, fname, major from student where ((lname=Yang or major=CS) and age<23) or lname=Jackson"
-    // "select lname, fname, major from student where ((lname=Yang major=CS))"
-};
+  };
 
-  // string input; 
-  // cout << "write command: ";
-  // getline(cin,input);
   SQL sql;
   Table t;
+  sql.print_list();
   sql.batch(command);
-  // while (input != "quit"){
-  //   try{
-  //     t = sql.command(input);
-  //     cout << t << endl;
-  //   } 
-  //   catch (bool valid){
-  //     cout << "Invalid command. Try again: " << endl; 
-  //   }
-  //   cout << "write command: ";
-  //   getline(cin,input);
-  // }
-  // cout << "ended test !" << endl;
-  // cout << "interactive test " << endl;
-  // string input = "select * from student lol garbage where fname = Mary";
-  // // cout << "write command: ";
-  // // getline(cin,input);
-  // SQL sql;
-  // Table t;
-  // // int i = 0;
-  // // vector<string> input = {
-  // //   // "select * from student where age > 11", 
-  // // // "select from student where age > 11",
-  // // "select * from  where"
-  
-  // // };
-  // // while (input != "quit"){
-  // if (input!= "quit"){
-  // //  while (i < input.size()){
-  //   // cout << input[i] << endl; 
-  //     t = sql.command(input);
-  //     if (!sql.is_error()){
-  //        cout << t << endl;
-  //     }
-  //     // i++;
-  //     cout << "write command: ";
-  //     getline(cin,input);
-  // }
-  // cout << "ended test !" << endl;
+  cout << "interactive test " << endl << endl;
+  string input; 
+  cout << "write command: ";
+  getline(cin,input);
+  while (input != "quit"){
+      t = sql.command(input);
+      if (!sql.is_error()){
+        cout << t << endl;  
+      }
+      cout << endl; 
+      cout << "write command: ";
+      getline(cin,input);
+  }
+  cout << "ended test !" << endl;
 
   return true; 
 }

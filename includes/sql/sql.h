@@ -16,18 +16,37 @@ class SQL{
     SQL(){
 
     }
-    bool is_error(){   //returns if it's in error or not
+
+    bool is_error(){   //returns if it's in error or not (for printing purposes only)
         return sqlerror_flag; 
     }
 
-    void batch(vector<string> commands){
+    void batch(vector<string> commands){  //prints the commands along with output
         Table t;
         for (int i = 0; i < commands.size(); i++){
             cout << "[" << i << "]" << endl;
             cout << commands[i] << endl;
             t = command(commands[i]);
-            cout << t << endl;
+            if (!sqlerror_flag){
+                cout << t << endl;
+            }
+            cout << endl;
         }
+    }
+
+    void print_list(){  //prints the list of all the tables it is current tracking 
+        cout << endl << "SQL: Currently tracking these tables:" << endl; 
+        cout << "-------------------------------------" << endl; 
+        ifstream findtable(table_names);  
+        string str;
+        if (findtable.is_open()){
+            while (getline(findtable,str)){
+                cout << str << endl;
+           }
+        }
+        findtable.close();
+        cout << "-------------------------------------" << endl; 
+        cout << endl;
     }
 
     Table command(const string &input){
@@ -41,44 +60,173 @@ class SQL{
         catch(const invalid_argument e){
             sqlerror_flag = true;
             cerr << e.what() << endl; 
-            return Table();
         }
         //if it's valid... 
         try{
-        if (ptree["command"][0] == "select"){
-            if (ptree["fields"][0] == "*"){ //select all
-                if (ptree.contains("where")){   //select all + condition
-                    vector<string> condition = ptree["condition"];
+            if (ptree["command"][0] == "select"){
+                if (ptree["fields"][0] == "*"){ //select all
+                    if (ptree.contains("where")){   //select all + condition
+                        vector<string> condition = ptree["condition"];
+                        string name = ptree["table_name"][0];
+                        if (tables.find(name) == tables.end()){ //if not found in tables Map
+                            ifstream findtable(table_names);    //check in "tablenames.txt"
+                            string str;
+                            bool found = false;
+                            if (findtable.is_open()){
+                                while (getline(findtable,str)){
+                                    if (str == name){   //if found in "tablenames.txt"
+                                        found = true;
+                                        tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
+                                        Table selected = tables[name].select_all_plus_condition(condition); //creates specific table
+                                        recnos.clear();
+                                        recnos = selected.select_recnos();  //gets the selected recnos
+                                        findtable.close();
+                                        return selected;
+                                    }
+                                }
+                            }
+                            findtable.close();
+                            if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
+                                recnos.clear();
+                                return Table();
+                            }
+                        }
+                        Table selected = tables[name].select_all_plus_condition(condition);
+                        recnos.clear();
+                        recnos = selected.select_recnos();
+                        return selected;
+                    }
+                    else{   //select * no condition
+                        string name = ptree["table_name"][0];
+                        if (tables.find(name) == tables.end()){  //if not found in tables Map
+                            ifstream findtable(table_names);  //check in "tablenames.txt"
+                            string str;
+                            bool found = false;
+                            if (findtable.is_open()){
+                                while (getline(findtable,str)){
+                                    if (str == name){  //if found in "tablenames.txt"
+                                        found = true;
+                                        tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
+                                        recnos.clear();
+                                        recnos = tables[name].select_recnos();  //gets the selected recnos
+                                        findtable.close();
+                                        return tables[name];
+                                    }
+                                }
+                            }
+                            findtable.close();
+                            if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
+                                recnos.clear();
+                                return Table();
+                            }
+                        }
+                        //else if it was found in the tables Map
+                        recnos.clear();
+                        recnos = tables[name].select_recnos();  //get the recnos and return that table
+                        return tables[name];
+                    }
+                }
+                else{   //select [fields] 
+                    if (ptree.contains("where")){  //select [fields] + condition
+                        vector<string> condition = ptree["condition"];
+                        string name = ptree["table_name"][0];
+                        if (tables.find(name) == tables.end()){  //if not found in tables Map
+                            ifstream findtable(table_names);  //check in "tablenames.txt"
+                            string str;
+                            bool found = false;
+                            if (findtable.is_open()){
+                                while (getline(findtable,str)){
+                                    if (str == name){   //if found in "tablenames.txt"
+                                        found = true;
+                                        tables[name] = Table(name);   //opens the existing table and inserts that into the tables Map
+                                        Table selected = tables[name].select(ptree["fields"], condition);  //creates specific table
+                                        recnos.clear();
+                                        recnos = selected.select_recnos();  //gets the selected recnos
+                                        findtable.close();
+                                        return selected;
+                                    }
+                                }
+                            }
+                            findtable.close();
+                            if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
+                                recnos.clear();
+                                return Table();
+                            }
+                        }
+                        //else if it was found in the tables Map
+                        Table selected = tables[name].select(ptree["fields"], condition);
+                        recnos.clear();
+                        recnos = selected.select_recnos();
+                        return selected;
+                    }
+                    else{   //select [fields] no condition
+                        string name = ptree["table_name"][0];
+                        if (tables.find(name) == tables.end()){  //if not found in tables Map
+                            ifstream findtable(table_names);   //check in "tablenames.txt"
+                            string str;
+                            bool found = false;
+                            if (findtable.is_open()){
+                                while (getline(findtable,str)){
+                                    if (str == name){   //if found in "tablenames.txt"
+                                        found = true;
+                                        tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
+                                        Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]); //creates specific table
+                                        recnos.clear();
+                                        recnos = selected.select_recnos(); //gets the selected recnos
+                                        findtable.close();
+                                        return selected;
+                                    }
+                                }
+                            }
+                            findtable.close();
+                            if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
+                                recnos.clear();
+                                return Table();
+                            }
+                        }
+                        //else if it was found in the tables Map
+                        Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
+                        recnos.clear();
+                        recnos = selected.select_recnos();
+                        return selected;
+                    }
+                }
+            }
+            else{
+                if (ptree["command"][0] == "make" || ptree["command"][0] =="create"){
                     string name = ptree["table_name"][0];
-                    if (tables.find(name) == tables.end()){ //if not found in tables Map
-                        ifstream findtable(table_names);    //check in "tablenames.txt"
+                    ofstream tablenames(table_names, ios::app); //open "tablenames.txt"
+                    if (tablenames.is_open()){
+                        ifstream findtable(table_names);  //check in "tablenames.txt" if name exists
                         string str;
                         bool found = false;
                         if (findtable.is_open()){
                             while (getline(findtable,str)){
-                                if (str == name){   //if found in "tablenames.txt"
+                                if (str == name){
                                     found = true;
-                                    tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
-                                    Table selected = tables[name].select_all_plus_condition(condition); //creates specific table
+                                    // tables[name] = Table(name, ptree["col"]);
+                                    tables[name] = Table(name);
+                                    cout << "Table [" << name << "] already exists: " << endl;
                                     recnos.clear();
-                                    recnos = selected.select_recnos();  //gets the selected recnos
+                                    recnos = tables[name].select_recnos();
                                     findtable.close();
-                                    return selected;
+                                    return tables[name];
                                 }
                             }
                         }
                         findtable.close();
-                        if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
-                            recnos.clear();
-                            return Table();
+                        if (!found){   //if it was not found in "tablenames.txt"
+                            tablenames << name << endl;  //append name 
                         }
                     }
-                    Table selected = tables[name].select_all_plus_condition(condition);
+                    tablenames.close();
+                    //after appending it to "tablenames.txt"
+                    tables[name] = Table(name, ptree["col"]);  //creates the table and inserts that into the tables Map
                     recnos.clear();
-                    recnos = selected.select_recnos();
-                    return selected;
+                    recnos = tables[name].select_recnos();  //gets the selected recnos
+                    return tables[name];
                 }
-                else{   //select * no condition
+                else if (ptree["command"][0] == "insert"){
                     string name = ptree["table_name"][0];
                     if (tables.find(name) == tables.end()){  //if not found in tables Map
                         ifstream findtable(table_names);  //check in "tablenames.txt"
@@ -89,160 +237,32 @@ class SQL{
                                 if (str == name){  //if found in "tablenames.txt"
                                     found = true;
                                     tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
-                                    recnos.clear();
-                                    recnos = tables[name].select_recnos();  //gets the selected recnos
+                                    tables[name].insert_into(ptree["values"]);  //inserts values into that table
                                     findtable.close();
                                     return tables[name];
                                 }
                             }
                         }
                         findtable.close();
-                        if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
-                            recnos.clear();
+                        if (!found){  //if it's not found, means it hasn't been created yet / it doesn't exist
+                            if (!sqlerror_flag){
+                            cout << "Table doesn't exist [can't insert into it]" << endl;
+                            }
+                            sqlerror_flag = true;
                             return Table();
                         }
                     }
-                    //else if it was found in the tables Map
-                    recnos.clear();
-                    recnos = tables[name].select_recnos();  //get the recnos and return that table
+                    //else if it was found in tables Map
+                    tables[name].insert_into(ptree["values"]); //inserts that into the table
                     return tables[name];
                 }
             }
-            else{   //select [fields] 
-                if (ptree.contains("where")){  //select [fields] + condition
-                    vector<string> condition = ptree["condition"];
-                    string name = ptree["table_name"][0];
-                    if (tables.find(name) == tables.end()){  //if not found in tables Map
-                        ifstream findtable(table_names);  //check in "tablenames.txt"
-                        string str;
-                        bool found = false;
-                        if (findtable.is_open()){
-                            while (getline(findtable,str)){
-                                if (str == name){   //if found in "tablenames.txt"
-                                    found = true;
-                                    tables[name] = Table(name);   //opens the existing table and inserts that into the tables Map
-                                    Table selected = tables[name].select(ptree["fields"], condition);  //creates specific table
-                                    recnos.clear();
-                                    recnos = selected.select_recnos();  //gets the selected recnos
-                                    findtable.close();
-                                    return selected;
-                                }
-                            }
-                        }
-                        findtable.close();
-                        if (!found){   //if it's not found, means it hasn't been created yet / it doesn't exist
-                            recnos.clear();
-                            return Table();
-                        }
-                    }
-                    //else if it was found in the tables Map
-                    Table selected = tables[name].select(ptree["fields"], condition);
-                    recnos.clear();
-                    recnos = selected.select_recnos();
-                    return selected;
-                }
-                else{   //select [fields] no condition
-                    string name = ptree["table_name"][0];
-                    if (tables.find(name) == tables.end()){  //if not found in tables Map
-                        ifstream findtable(table_names);   //check in "tablenames.txt"
-                        string str;
-                        bool found = false;
-                        if (findtable.is_open()){
-                            while (getline(findtable,str)){
-                                if (str == name){   //if found in "tablenames.txt"
-                                    found = true;
-                                    tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
-                                    Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]); //creates specific table
-                                    recnos.clear();
-                                    recnos = selected.select_recnos(); //gets the selected recnos
-                                    findtable.close();
-                                    return selected;
-                                }
-                            }
-                        }
-                        findtable.close();
-                        if (!found){    //if it's not found, means it hasn't been created yet / it doesn't exist
-                            recnos.clear();
-                            return Table();
-                        }
-                    }
-                    //else if it was found in the tables Map
-                    Table selected = tables[name].select_specific_fields_no_condition(ptree["fields"]);
-                    recnos.clear();
-                    recnos = selected.select_recnos();
-                    return selected;
-                }
-            }
-        }
-        else{
-            if (ptree["command"][0] == "make" || ptree["command"][0] =="create"){
-                string name = ptree["table_name"][0];
-                ofstream tablenames(table_names, ios::app); //open "tablenames.txt"
-                if (tablenames.is_open()){
-                    ifstream findtable(table_names);  //check in "tablenames.txt" if name exists
-                    string str;
-                    bool found = false;
-                    if (findtable.is_open()){
-                        while (getline(findtable,str)){
-                             if (str == name){
-                                found = true;
-                                // tables[name] = Table(name, ptree["col"]);
-                                tables[name] = Table(name);
-                                cout << "Table [" << name << "] already exists: " << endl;
-                                recnos.clear();
-                                recnos = tables[name].select_recnos();
-                                findtable.close();
-                                return tables[name];
-                            }
-                        }
-                    }
-                    findtable.close();
-                    if (!found){   //if it was not found in "tablenames.txt"
-                        tablenames << name << endl;  //append name 
-                    }
-                }
-                tablenames.close();
-                //after appending it to "tablenames.txt"
-                cout << ptree["col"] << endl; 
-                tables[name] = Table(name, ptree["col"]);  //creates the table and inserts that into the tables Map
-                recnos.clear();
-                recnos = tables[name].select_recnos();  //gets the selected recnos
-                return tables[name];
-            }
-            else if (ptree["command"][0] == "insert"){
-                string name = ptree["table_name"][0];
-                if (tables.find(name) == tables.end()){  //if not found in tables Map
-                    ifstream findtable(table_names);  //check in "tablenames.txt"
-                    string str;
-                    bool found = false;
-                    if (findtable.is_open()){
-                        while (getline(findtable,str)){
-                            if (str == name){  //if found in "tablenames.txt"
-                                found = true;
-                                tables[name] = Table(name);  //opens the existing table and inserts that into the tables Map
-                                tables[name].insert_into(ptree["values"]);  //inserts values into that table
-                                findtable.close();
-                                return tables[name];
-                            }
-                        }
-                    }
-                    findtable.close();
-                    if (!found){  //if it's not found, means it hasn't been created yet / it doesn't exist
-                        recnos.clear();
-                        return Table();
-                    }
-                }
-                //else if it was found in tables Map
-                tables[name].insert_into(ptree["values"]); //inserts that into the table
-                return tables[name];
-            }
-        }
         }
         catch(const invalid_argument e){
             sqlerror_flag = true;
             cerr << e.what() << endl; 
-            return Table();
         }
+        return Table();
     }
 
     vector<long> select_recnos(){

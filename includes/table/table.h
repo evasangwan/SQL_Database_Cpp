@@ -21,9 +21,10 @@
 #include "../Token/rpn.h"
 #include "../Token/shuntingyard.h"
 using namespace std;
+
 class Table{
     public:
-        Table(){
+        Table(){  //default empty table
             num = 0;
             string s = "temp";
             strcpy(file_name,s.c_str());
@@ -35,13 +36,16 @@ class Table{
             mmap.clear();                  
             field_map.clear(); 
         }
+
+        //creating a new table 
         Table(const string& name, vector<string>fieldnames){
             num = 0;
             selectrecnos.clear();
             set_fields.clear();
             set_fields = fieldnames;
             strcpy(file_name,name.c_str());
-            ofstream txtfile(name + ".txt");
+            ofstream txtfile(name + ".txt");  //creating txt file with same name
+            //inserting the fieldnames into it
             if (txtfile.is_open()){
                 for (int i = 0; i < fieldnames.size(); i++){
                     if (i == fieldnames.size()-1){
@@ -54,23 +58,22 @@ class Table{
             }
             txtfile.close();
             fstream f;
-            open_fileW(f, file_name);
-            //cout << fieldnames << endl;
+            open_fileW(f, file_name);  //open file for writing
             for (int j = 0; j < fieldnames.size(); j++){
-                field_map.insert(fieldnames[j],j);
+                field_map.insert(fieldnames[j],j);   //inserting fieldnames & index into field_map Map
                 MMap<string,long> m;
-                mmap.push_back(m);
+                mmap.push_back(m);  //creating an empty mmap for each field 
             }
-            // cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
-            // cout << field_map << endl;
             f.close();
         }
+
         Table(const string& s){ //opens an existing table
             selectrecnos.clear();
             num = 0;
-            string name = s + ".txt";
-            ifstream getdata(name);
+            string name = s + ".txt";  
+            ifstream getdata(name);   //opens txt file to get its fields 
             string str;
+            //pushes each field into set_fields vector 
             if (getdata.is_open()){
                 while (getline(getdata,str)){
                     if (!str.empty()){
@@ -79,59 +82,51 @@ class Table{
                 }
             }
             getdata.close();
-            // for (int i = 0; i < set_fields.size(); i++){
-            //     cout << "[" << set_fields[i] << "]"<<endl;
-            // }
             strcpy(file_name,s.c_str());
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name);  //open file for read/writing
             for (int j = 0; j < set_fields.size(); j++){
-                field_map.insert(set_fields[j],j);
+                field_map.insert(set_fields[j],j);  //inserting fieldnames & index into field_map Map
                 MMap<string,long> m;
-                mmap.push_back(m);
+                mmap.push_back(m);   //creating an empty mmap for each field
             }
             FileRecord r;
             long recno = 0;
-            r.read(f, recno);    
+            r.read(f, recno);   //reading from file 
             while (!f.eof()){
-                vector<string> data = r.data;
+                vector<string> data = r.data;  //data is a vector of the values (input)
                 for (int i = 0; i < data.size(); i++){
-                    mmap[i].insert(data[i], recno);
+                    mmap[i].insert(data[i], recno);  //inserting each component of the vector data at its respective index
                 }
-                selectrecnos.push_back(recno);
+                selectrecnos.push_back(recno); //pushing back all the valid recnos
                 recno++;
-                num++;
+                num++;   //num keeps track of how many records there are
                 r.read(f, recno);
             }
             f.close();
         }
+
+        //v is the vector of the values (data)
         void insert_into(vector<string> v){
-            // cout << "INSIDE INSER INTO "<<endl; 
-            // cout << "inserted: " << endl;
-            // cout << v << endl;
-            // cout << "Mmap we're starting with " << endl;
-            // cout << mmap << endl;
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name); //opening file for read/writing
             FileRecord r(v);
-            long recno = r.write(f);
+            long recno = r.write(f);  //writing to the file + getting the recno 
             for (int i = 0; i < v.size(); i++){
-                mmap[i].insert(v[i], recno);
+                mmap[i].insert(v[i], recno);   //inserting each component of the vector v at its respective index
             }
-            selectrecnos.push_back(recno);
-            num++;
-            // cout << "###################"<<endl;
-            // cout << mmap << endl;
+            selectrecnos.push_back(recno);  //pushing back the valid recno
+            num++;  //num keeps track of how many records there are
             f.close();
         }
+
         Table select_all(){
-            //cout << "file_name " << file_name << endl;
             set_fields.clear();
-            // num = 0;
             string open = file_name;
             open += ".txt";
-            ifstream getdata(open);
+            ifstream getdata(open);  //opens txt file to get its fields 
             string str;
+            //pushes each field into set_fields vector 
             if (getdata.is_open()){
                 while (getline(getdata,str)){
                     if (!str.empty()){
@@ -140,43 +135,35 @@ class Table{
                 }
             }
             getdata.close();
-            // for (int i = 0; i < set_fields.size(); i++){
-            //     cout << "[" << set_fields[i] << "]"<<endl;
-            // }
             string name = file_name;
             name += "_" + to_string(serial++);
-            Table selected(name, set_fields);
+            Table selected(name, set_fields);  //creating new "selected" table
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name); //opening file for read/writing
             FileRecord r;
             long recno = 0;
             vector<long> recnos;
-            r.read(f, recno);    
+            r.read(f, recno);  //starting @ 0 and reading from file
             while (!f.eof()) {
-                vector<string> data = r.data;
-                selected.insert_into(data);
-                recnos.push_back(recno);
+                vector<string> data = r.data;  //data is a vector of the data (values)
+                selected.insert_into(data);  //inserting vector of values into selected table
+                recnos.push_back(recno);  //keeping track of the recno
                 recno++;
                 r.read(f, recno);
             }
             f.close();
-            // cout << "HELLO"<<endl;
-            // cout << recnos << endl;
-            // selected.num = recno;
             selectrecnos.clear();
             selected.selectrecnos = recnos;
-            // cout << selectrecnos << endl;
             return selected;
         }
-        //for now! 
+
         Table select_all_plus_condition(vector<string>condition){
-            // num = 0;
             string name = file_name;
-            // cout <<"name "<<name << endl;
             name += ".txt";
-            ifstream getdata(name);
+            ifstream getdata(name);  //opens txt file to get its fields 
             string str;
             set_fields.clear();
+            //pushes each field into set_fields vector 
             if (getdata.is_open()){
                 while (getline(getdata,str)){
                     if (!str.empty()){
@@ -184,37 +171,27 @@ class Table{
                     }
                 }
             }
-            // for (int i = 0; i < set_fields.size(); i++){
-            //     cout << "[" << set_fields[i] << "]"<<endl;
-            // }
-            // cout << set_fields<<endl;
-            Table selected = select(set_fields, condition);
-            // cout <<"testing hereeeeeeeeeeee"<<endl;
-            // cout << selected << endl;
-            // cout << selected.select_recnos() << endl;
+            Table selected = select(set_fields, condition); //creates new table "selected" and passes fields + conditions to get new table
             return selected;
         }
+
         Table select_specific_fields_no_condition(vector<string>&fields){
-            // num = 0;
             string name = file_name;
             name += "_" + to_string(serial++);
-            Table selected(name, fields);
+            Table selected(name, fields);  //creating new "selected" table
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name);  //opening file for read/writing
             FileRecord r;
             long recno = 0;
             vector<long> recnos;
-            r.read(f, recno);    
-            // cout << "-----------------------------------------------"<<endl;
-            // cout << field_map << endl;
-            // cout << "-----------------------------------------------" << endl;
-            while (!f.eof()) {
-                vector<string> filtered; 
+            r.read(f, recno);  //starting at 0 and reading from the file
+            while (!f.eof()){
+                //this is where we filter
+                //"filtered" will be the vector we will insert into selected
+                vector<string> filtered;  
                 for (int k = 0; k < fields.size(); k++){
-                    // cout << "fields " << fields[k]<<endl;
-                    long index = field_map[fields[k]];
-                    // cout << "index " << index << endl;
-                    filtered.push_back(r.data[index]);
+                    long index = field_map[fields[k]];  //get the respective index (order of specific fields)
+                    filtered.push_back(r.data[index]);  //push into "filtered" the data at that specific index
                 }
                 selected.insert_into(filtered);
                 recnos.push_back(recno);
@@ -256,78 +233,55 @@ class Table{
             f.close();
             return selected; 
         }
+
         Table select(vector<string>fields,vector<string> conditions){
             set_fields.clear();
             set_fields = fields;
-            // cout << "@@@@@@"<<endl;
-            // cout << set_fields << endl;
             string name = file_name;
             name += "_" + to_string(serial++);
-            // string s = file_name;
-            // Table selected(s);
-            Table selected(name,set_fields);
-            // cout << "printing selected "<<endl;
-            // cout << selected << endl;
-            //cout << "conditions " << conditions << endl;
+            Table selected(name,set_fields);  //create a new table "selected"
             ShuntingYard sy(conditions);
             Queue<TToken*> post = sy.postfix();
-            // cout << "POST "<<endl;
-            // cout << post << endl;
             RPN rpn(post);
-            // cout << "field_nam" <<endl;
-            // cout << field_map << endl;
-            // cout << "mmap " << endl;
-            // cout << mmap << endl;
-            vector<long> recs = rpn.condition(field_map, mmap);
-            //  cout << "no freaking way"<<endl;
-            // cout << recs << endl;
+            vector<long> recs = rpn.condition(field_map, mmap); //recs are a vector of all the selected recnos 
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name);  //open file for read/writing
             FileRecord r;
             for (int i = 0; i < recs.size(); i++){
                 r.read(f, recs[i]);
+                //"filtered" will be the vector we will insert into selected
                 vector<string> filtered; 
                 for (int k = 0; k < fields.size(); k++){
-                    // cout << "fields["<< k << "] " << fields[k] << endl;
-                    long index = field_map[fields[k]];
-                    // cout << "index " << index << endl;
-                    // cout <<" r data " << r.data << endl;
-                    // for (int i = 0; i < r.data.size(); i++){
-                    //     cout << "["<< r.data[i]<< "]"<<endl;
-                    // }
-                    filtered.push_back(r.data[index]);
+                    long index = field_map[fields[k]];  //get the respective index (order of specific fields)
+                    filtered.push_back(r.data[index]);  //push into "filtered" the data at that specific index
                 }
                 selected.insert_into(filtered);
             }
-            // selected.num = recs.size();
             selected.selectrecnos.clear();
-            // cout << "RECS"<<endl;
-            // cout << recs << endl;
             selected.selectrecnos = recs;
             recs.clear();
             f.close();
-            // cout << "testing to see if they r the same tbale " << endl;
-            // cout << selected << endl;
-            // cout << "-------------------------------------------------------------"<<endl;
             return selected;
         }
+
         Table select(vector<string> fields, Queue<TToken*> post){
-            set_fields.clear();  //added this !!! in case all hell breaks loose
+            set_fields.clear();  
             set_fields = fields;
             string name = file_name;
             name += "_" + to_string(serial++);
-            Table selected(name, fields);
+            Table selected(name, fields);  //create new table with those fields 
             RPN rpn(post);
-            vector<long> recs = rpn.condition(field_map, mmap);
+            vector<long> recs = rpn.condition(field_map, mmap);  //after running it thru rpn, we get a vector of recnos
             fstream f;
-            open_fileRW(f, file_name);
+            open_fileRW(f, file_name);  //opening file to read/write 
             FileRecord r;
             for (int i = 0; i < recs.size(); i++){
                 r.read(f, recs[i]);
+                //"filtered" will be the vector we will insert into selected
                 vector<string> filtered; 
                 for (int k = 0; k < fields.size(); k++){
-                    long index = field_map[fields[k]];
-                    filtered.push_back(r.data[index]);
+                    long index = field_map[fields[k]];  //get the respective index (order of specific fields)
+                    filtered.push_back(r.data[index]);  //push into "filtered" the data at that specific index
                 }
                 selected.insert_into(filtered);
             }
@@ -341,9 +295,11 @@ class Table{
         vector<long> select_recnos(){
             return selectrecnos;
         }
+
         int getnum(){
             return num;
         }
+
         friend ostream& operator<<(ostream& outs, const Table& t){
             fstream j;
             FileRecord r;
@@ -361,6 +317,7 @@ class Table{
             j.close();
             return outs;
         }
+        
     private:
     vector<MMap<string,long>> mmap;
     Map<string,long> field_map;

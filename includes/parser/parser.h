@@ -51,20 +51,20 @@ class Parser{
     void validate_comma(string token, string name, string msg){
         int size = ptree[name].size();
         if (token == ","){
-            if (size > 0 && ptree[name][size-1] == ","){
+            if (size > 0 && ptree[name][size-1] == ","){  //if two commas in a row/no input between them, invalid
                 ptree.clear();
                 throw invalid_argument(msg);
             }
         }
         // else{
-        //     if (size > 0 && ptree[name][size-1] != ","){
+        //     if (size > 0 && ptree[name][size-1] != ","){  //if two words in a row/no comma separating them, invalid
         //         ptree.clear();
         //         throw invalid_argument("Missing comma");
         //     }
         // }
     }
 
-    //("fields")
+    //cleans up vector by getting rid of commas once comma placements are valid
     void cleanup(string name){
         if (ptree.contains(name)){
             vector<string> clean;
@@ -74,11 +74,11 @@ class Parser{
                     clean.push_back(ptree[name][i]);
                 }
             }
-            
             ptree[name] = clean;
         }
     }
 
+    //checks if name exists in the ptree 
     void validate_is_there(string name, string msg){
         if (!ptree.contains(name) || ptree[name].empty()){
             ptree.clear();
@@ -100,7 +100,7 @@ class Parser{
         }
         else{
             ptree.clear();
-            throw false;
+            throw invalid_argument("Empty input. Try again: ");
         }
         int state = 0;
         int col;
@@ -153,14 +153,12 @@ class Parser{
                     break;
 
                 case FROM:
-                    // validate_is_there("fields","Expected: field name(s)");
                     ptree["from"] += s;
                     table_name = true;
                     fields = false;
                     break;
 
                 case WHERE:
-                    // validate_is_there("table_name","Expected: table name");
                     ptree["where"] += s;
                     condition = true;
                     break;
@@ -199,14 +197,6 @@ class Parser{
                 cleanup("fields");
                 cleanup("values");
                 cleanup("col");
-                // if (validate()){
-                //     return true;
-                // } 
-                // else{
-                //     ptree.clear();
-                //     throw false;  //if not valid throw exception
-                //     // throw runtime_error("invalid");
-                // }
                 return validate();
             }
             keep = token;
@@ -269,50 +259,11 @@ class Parser{
             t = Token();
             stk>>t;
         }
-        // fix_vect(); //gets rid of commas
         //pushing everything from that vector into the queue
         for (int i = 0; i < inputq.size(); i++){
             queue.push(inputq[i]);    
         }
     }  
-
-    void fix_vect(){ //gets rid of commas 
-        vector<string> fixed;
-        for (int i = 0; i < inputq.size(); i++){
-            if (inputq[i] != ","){
-                fixed.push_back(inputq[i]);
-            }
-        }
-        inputq = fixed;
-    }
-
-    // bool validate(){  //error handling 
-    //     if (ptree.contains("command") && ptree["command"][0] == "select"){
-    //         if (ptree.contains("table_name") && ptree.contains("fields") && !ptree["table_name"][0].empty() && (ptree["fields"][0] == "*" || !ptree["fields"].empty())){
-    //             if (ptree.contains("where")){
-    //                 if (ptree.contains("condition") && !ptree["condition"].empty() && ptree["garbage"].empty()){
-    //                     return true; 
-    //                 }
-    //             }
-    //             else{
-    //                 if (ptree["garbage"].empty()){
-    //                     return true; 
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     else if (ptree.contains("command") && ptree["command"][0] == "make" || ptree["command"][0] == "create"){
-    //         if (ptree.contains("table_name") && ptree.contains("col") && !ptree["table_name"][0].empty() && !ptree["col"].empty() && ptree["garbage"].empty()){
-    //             return true;
-    //         }
-    //     }
-    //     else if (ptree.contains("command") && ptree["command"][0] == "insert"){
-    //         if (ptree.contains("table_name") && ptree.contains("values") && !ptree["table_name"][0].empty() && !ptree["values"].empty() && ptree["garbage"].empty()){
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // } 
 
    bool validate(){  //error handling 
         if (ptree.empty()){
