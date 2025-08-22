@@ -1,50 +1,26 @@
 
 # Work Report
 
-## Name: <ins> your name goes here </ins>
+## Name: <ins> Eva Sangwan </ins>
+
+# SQL Database Management System 
+
+## Creating Table 
+<img width="595" height="120" alt="image" src="https://github.com/user-attachments/assets/6d937a93-f409-4cba-bddd-d7a24b307ce3" />
+
 
 ## Features:
 
-- Not Implemented:
-  - what features have been implemented
+Stores data using Maps and Multimaps that are built on B+Trees
 
-<br><br>
+It keeps track of things like individual indices, lists of indices, and lists of keywords
 
-- Implemented:
-  - what has been implemented
+For saving table records, the program uses binary files
 
-<br><br>
+It uses text files to remember information (table history) like table names, field names, and the number of records so that everything is still available the next time the program is run
 
-- Partly implemented:
-  - what features have not been implemented
+A state machine (built using an adjacency matrix) is used to handle the grammar and interpret commands entered by the user
 
-<br><br>
-
-- Bugs
-  - Known bugs
-
-<br><br>
-
-# Reflections:
-
-- Any thoughts you may have and would like to share.
-
-# **output**
-<pre>
-<br/><br/><br/><br/>
-## Delete this line and paste the output of your basic test and then testB here
-</pre>
-
-
-<br/><br/>
-
-# basic_test.cpp output:
-<pre>
-<br/><br/><br/><br/>
-</pre>
-# testB.cpp output:
-<pre>
-<br/><br/><br/><br/>
-</pre>
+Includes a batch mode: the constructor takes a file name (a text file) as an argument and executes the commands within
 
 
