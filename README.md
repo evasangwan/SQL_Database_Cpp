@@ -6,43 +6,56 @@
 # SQL Database Management System 
 
 ## Create Table 
-<img width="595" height="120" alt="image" src="https://github.com/user-attachments/assets/6d937a93-f409-4cba-bddd-d7a24b307ce3" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6d937a93-f409-4cba-bddd-d7a24b307ce3" alt="Create Table Example" width="800"/>
+</p>
 
 ## Insert into Table
-<img width="628" height="425" alt="image" src="https://github.com/user-attachments/assets/a1057adc-4a15-4190-ab5c-f89d86e13c9c" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a1057adc-4a15-4190-ab5c-f89d86e13c9c" alt="Insert Table Example" width="800"/>
+</p>
 
 ## Select Table
 Select * from table: 
 
-<img width="625" height="138" alt="image" src="https://github.com/user-attachments/assets/b62fd74f-ea0a-4d17-9641-73f34d51ea8b" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b62fd74f-ea0a-4d17-9641-73f34d51ea8b" alt="Select All Example" width="800"/>
+</p>
 
 Other Select Examples: 
 
-<img width="497" height="94" alt="image" src="https://github.com/user-attachments/assets/a54d840e-ade2-42ed-8feb-32d5e07dcb75" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a54d840e-ade2-42ed-8feb-32d5e07dcb75" alt="Select Example 1" width="800"/>
+</p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/4b5e454c-e5e3-4727-a196-c6bc34792814" alt="Select Example 2" width="800"/>
+</p>
 
-<img width="623" height="88" alt="image" src="https://github.com/user-attachments/assets/4b5e454c-e5e3-4727-a196-c6bc34792814" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b1de590a-f100-44b7-83c4-3801f52f254d" alt="Select Example 3" width="800"/>
+</p>
 
-
-<img width="626" height="89" alt="image" src="https://github.com/user-attachments/assets/b1de590a-f100-44b7-83c4-3801f52f254d" />
-
-
-<img width="389" height="109" alt="image" src="https://github.com/user-attachments/assets/ed469ef7-7599-416e-90e6-8b20a11aa50c" />
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ed469ef7-7599-416e-90e6-8b20a11aa50c" alt="Select Example 4" width="800"/>
+</p>
 
 ## Error Handling
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/295ab087-496d-4fae-b98c-e99936e83abf" alt="Error Example 1" width="800"/>
+</p>
 
-<img width="221" height="131" alt="image" src="https://github.com/user-attachments/assets/295ab087-496d-4fae-b98c-e99936e83abf" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6468fab9-cfed-4019-9c58-848ca964d389" alt="Error Example 2" width="800"/>
+</p>
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0a381079-1116-4c73-b62d-fc21030f1dbf" alt="Error Example 3" width="800"/>
+</p>
 
-<img width="233" height="128" alt="image" src="https://github.com/user-attachments/assets/6468fab9-cfed-4019-9c58-848ca964d389" />
-
-
-<img width="323" height="98" alt="image" src="https://github.com/user-attachments/assets/0a381079-1116-4c73-b62d-fc21030f1dbf" />
-
-
-<img width="326" height="149" alt="image" src="https://github.com/user-attachments/assets/668e1fdd-6d2d-456f-9dcd-01bef80b2515" />
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/668e1fdd-6d2d-456f-9dcd-01bef80b2515" alt="Error Example 4" width="800"/>
+</p>
 
 
 ## Features:
